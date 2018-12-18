@@ -17,14 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from core import views
 from rest_framework import routers
-from api import views as api_view
+from api import views as api_views
 
 # Router for api url's
 router = routers.DefaultRouter()
-router.register('users', api_view.UserViewSet)
-router.register('posts', api_view.PostViewSet)
+router.register('users', api_views.UserViewSet)
+router.register('posts', api_views.PostViewSet)
 
 urlpatterns = [
-    path('api/', include((router.urls, 'posts'), namespace='api')),
+    path('api/', include((router.urls, 'core'), namespace='api')),
     path('admin/', admin.site.urls),
 ]

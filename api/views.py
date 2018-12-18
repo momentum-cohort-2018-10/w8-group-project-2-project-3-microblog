@@ -29,8 +29,8 @@ class PostViewSet(mixins.CreateModelMixin,
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    @detail_route(methods=['GET', 'POST'])
-    def responses(self, request, pk=None):
-        post = self.get_object()
-        serializer = ResponseSerializer(post.post_set.all(), many=True)
-        return Response(serializer.data)
+    # @detail_route(methods=['GET'])
+    # def responses(self, request, pk=None):
+    #     post = self.get_object()
+    #     serializer = ResponseSerializer(post.post_response.all(), many=True)
+    #     return Response(serializer.data)
