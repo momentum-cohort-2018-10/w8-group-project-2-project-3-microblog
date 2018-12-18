@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from core.models import User, Post, Follow, Response
 from mimesis import Person
-from faker import faker
+from faker import Faker
 import random
 
 
@@ -30,8 +30,7 @@ class Command(BaseCommand):
         fake_posts = []
         for i in range(50):
             post_dictionary = {
-                'title': fake.sentence(),
-                'description': fake.text(),
+                'text': fake.sentence(),
                 'user': users[random.randrange(100)],
             }
             fake_posts.append(post_dictionary)
@@ -43,7 +42,7 @@ class Command(BaseCommand):
         print('50 Posts Imported')
 
         for i in range(200):
-            Response.objects.create(post=posts[random.randrange(50)], user=users[random.randrange(100)], response=fake.sentence())
+            Response.objects.create(post=posts[random.randrange(50)], user=users[random.randrange(100)], text=fake.sentence())
         print('200 Responses Imported')
 
         for i in range(100):
