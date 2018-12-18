@@ -31,6 +31,7 @@ router = routers.DefaultRouter()
 router.register('users', api_views.UserViewSet)
 router.register('posts', api_views.PostViewSet)
 router.register('responses', api_views.ResponseViewSet)
+router.register('follows', api_views.FollowViewSet)
 
 
 urlpatterns = [

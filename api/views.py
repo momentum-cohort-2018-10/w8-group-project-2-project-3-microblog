@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, mixins
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
-from api.serializers import UserSerializer, PostSerializer, ResponseSerializer
+from api.serializers import UserSerializer, PostSerializer, ResponseSerializer, FollowSerializer
 from core.models import User, Post, Follow, Response
 
 # same as UserViewSet(viewsets.ModelViewSet): but without update functionality
@@ -13,6 +13,7 @@ class UserViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 class PostViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -25,6 +26,7 @@ class PostViewSet(mixins.CreateModelMixin,
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 class ResponseViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.DestroyModelMixin,
@@ -32,6 +34,15 @@ class ResponseViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = Response.objects.all()
     serializer_class = ResponseSerializer
+
+
+class FollowViewSet(mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.DestroyModelMixin,
+                  mixins.ListModelMixin,
+                  viewsets.GenericViewSet):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
 
     # @detail_route(methods=['GET'])
     # def responses(self, request, pk=None):
