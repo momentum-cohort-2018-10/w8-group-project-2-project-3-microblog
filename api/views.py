@@ -11,12 +11,8 @@ class UserViewSet(mixins.CreateModelMixin,
                   mixins.DestroyModelMixin,
                   mixins.ListModelMixin,
                   viewsets.GenericViewSet):
-    queryset = Post.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
 
 class PostViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -28,6 +24,14 @@ class PostViewSet(mixins.CreateModelMixin,
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class ResponseViewSet(mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.DestroyModelMixin,
+                  mixins.ListModelMixin,
+                  viewsets.GenericViewSet):
+    queryset = Response.objects.all()
+    serializer_class = ResponseSerializer
 
     # @detail_route(methods=['GET'])
     # def responses(self, request, pk=None):

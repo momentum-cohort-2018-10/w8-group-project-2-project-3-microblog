@@ -15,22 +15,22 @@ class FollowingSerializer(serializers.ModelSerializer):
         model = Follow
         fields = ('followed_user',)
 
-class UserSerializer(serializers.ModelSerializer):
-    # url = serializers.HyperlinkedIdentityField(read_only=True, view_name="core:user-detail")
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(read_only=True, view_name="core:user-detail")
     follows_from = FollowingSerializer(many=True, read_only=True)
     follows_to = FollowedSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('username','follows_from', 'follows_to')
+        fields = ('username', 'url', 'follows_from', 'follows_to')
 
 class ResponseSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
-    # response_url = serializers.HyperlinkedIdentityField(view_name='core:response-detail')
+    url = serializers.HyperlinkedIdentityField(view_name='core:response-detail')
 
     class Meta:
         model = Response
-        fields = ('user', 'post', 'text',)
+        fields = ('user', 'post', 'text', 'url')
 
 class PostSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)

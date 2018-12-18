@@ -23,6 +23,7 @@ from api import views as api_views
 router = routers.DefaultRouter()
 router.register('users', api_views.UserViewSet)
 router.register('posts', api_views.PostViewSet)
+router.register('responses', api_views.ResponseViewSet)
 
 urlpatterns = [
     path('api/', include((router.urls, 'core'), namespace='api')),
