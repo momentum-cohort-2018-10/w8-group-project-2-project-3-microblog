@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
+    path('test_vue/', views.test_vue, name='test_vue'),
     path(
         'register/',
         TemplateView.as_view(template_name='register.html'),

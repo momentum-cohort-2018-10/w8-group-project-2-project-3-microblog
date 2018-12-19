@@ -1,3 +1,15 @@
 body {
-    background-color: cornflowerblue;
+    background-color: rgb(227, 245, 242);
     }
+
+header {
+    background-color: #1B77AE;
+}
+
+.tweet {
+    background-color: #C3FAFB;
+}
+
+.tweet-bg {
+    background-color: #40E8FB;
+}
