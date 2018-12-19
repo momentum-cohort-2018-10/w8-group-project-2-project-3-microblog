@@ -7,5 +7,9 @@ header {
 }
 
 .tweet {
+    background-color: #C3FAFB;
+}
+
+.tweet-bg {
     background-color: #40E8FB;
 }
