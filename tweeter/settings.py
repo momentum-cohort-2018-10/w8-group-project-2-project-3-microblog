@@ -166,3 +166,10 @@ LOGIN_REDIRECT_URL = "home"
 django_heroku.settings(locals())
 
 AUTH_USER_MODEL = "core.User"
+
+GRAVATAR_URL = 'http://www.gravatar.com/'
+GRAVATAR_BASE_URL = 'https://secure.gravatar.com/'
+GRAVATAR_DEFAULT_SIZE = '80'
+GRAVATAR_DEFAULT_IMAGE = 'mm'
+GRAVATAR_DEFAULT_RATING = 'g'
+GRAVATAR_DEFAULT_SECURE = True
