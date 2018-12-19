@@ -23,6 +23,7 @@ django-gravatar2 = "*"
 psycopg2 = "*"
 django-extensions = "*"
 django-el-pagination = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
