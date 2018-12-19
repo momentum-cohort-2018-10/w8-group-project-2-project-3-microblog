@@ -5,7 +5,7 @@
 <head>
     <title>
         {% block title %}
-        Welcome to TWEETER
+        TWEETER
         {% endblock title %}
     </title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% block header %}{% endblock header %}
@@ -15,20 +15,18 @@
 
 
     <header>
-        <h1>Please TWAT your TWITS below!</h1>
         <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
+                <a href="{% url 'home' %}"><span>Home</span></a>
+                <a href="{% url 'about' %}">About</a>
                 {% if user.is_authenticated %} <li>
                     <a href="{% url 'auth_logout' %}">Logout</a>
                 </li>
                 {% else %}
-                <li>
-                    <a href="{% url 'auth_login' %}">Login</a> </li>
-                <li>
+                
+                    <a href="{% url 'auth_login' %}">Login</a> 
+                
                     <a href="{% url 'registration_register' %}">Register</a>
-                </li>
+                
                 {% endif %}
 
 

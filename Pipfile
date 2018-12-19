@@ -21,6 +21,7 @@ django-heroku = "*"
 pillow = "*"
 django-gravatar2 = "*"
 psycopg2 = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.7"
