@@ -14,12 +14,15 @@ def index(request):
     })
 
 # @login_required
-def profile(request, user_id):
-    posts = Post.objects.get(pk=user_id)
-    # if request.user.is_authenticated:
-    #     user_posts = request.user.user_posts.all()
+def profile(request):
+    posts = Post.objects.all()
+    user_posts = []
+    if request.user.is_authenticated:
+        user_posts = request.user.user_posts.all()
     return render(request, 'profilepage.html', {
         'posts': posts,
+        'user_posts': user_posts,
+
     })
 
 
