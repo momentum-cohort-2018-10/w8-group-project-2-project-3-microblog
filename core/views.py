@@ -9,3 +9,6 @@ def index(request):
     return render(request, 'index.html', {
         'posts': posts,
     })
+
+def test_vue(request):
+    return render(request, 'test_vue.html')
