@@ -36,6 +36,7 @@ router.register('follows', api_views.FollowViewSet)
 
 urlpatterns = [
     path('api/', include((router.urls, 'core'), namespace='api')),
+    path('accounts/<int:user_id>/profile', views.profile, name='profile'),
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
     path('test_vue/', views.test_vue, name='test_vue'),
