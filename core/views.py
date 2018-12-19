@@ -26,5 +26,17 @@ def profile(request):
     })
 
 
+
+def post_list(request,
+    template='post_list.html',
+    page_template='index.html'):
+    context = {
+        'post_list': Post.objects.all(),
+        'page_template': page_template,
+    }
+    if request.is_ajax():
+        template = page_template
+    return render(request, template, context)
+
 def test_vue(request):
     return render(request, 'test_vue.html')

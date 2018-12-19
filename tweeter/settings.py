@@ -154,6 +154,8 @@ REST_FRAMEWORK = {
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
+EL_PAGINATION_PER_PAGE = 7
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'testing@example.com'
 EMAIL_HOST_USER = ''
