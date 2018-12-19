@@ -3,6 +3,7 @@ const posts = new Vue({
   delimiters: ['${','}'],
   data: {
     posts: [],
+    isActive: false,
     loading: false,
     currentPost: {},
     message: null,
@@ -55,6 +56,9 @@ const posts = new Vue({
         this.loading = false
         console.log(err)
       })
+    },
+    toggle: function () {
+      this.isActive = !this.isActive
     }
   }
 });

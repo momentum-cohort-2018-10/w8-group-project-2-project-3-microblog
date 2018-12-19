@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'url', 'users_followed', 'followers')
+        fields = ('username', 'url', 'users_followed', 'followers', 'pk')
 
 
 class ResponseSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class ResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Response
-        fields = ('user', 'text', 'url')
+        fields = ('user', 'text', 'url', 'created_at', 'pk')
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -35,4 +35,4 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('text', 'post_url', 'user',  'created_at', 'post_response')
+        fields = ('text', 'post_url', 'user',  'created_at', 'post_response', 'pk')
