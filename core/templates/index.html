@@ -10,7 +10,10 @@ Homepage - {{ block.super }}
 {% block content %}
 <h1>Many POSTS much WOW!</h1>
 <p>insert applause</p>
-
+{% for post in posts %}
+    <h3>{{ post.text }}</h3>
+    <p> Twitted by: {{ post.user }} at {{ post.created_at }}
+{% endfor %}
 
 {% endblock content %}
 
