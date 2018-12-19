@@ -1,4 +1,6 @@
 {% extends 'base.html' %} 
+{% load el_pagination_tags %}
+
 
 {% block title %}
 Homepage - {{ block.super }} 
@@ -10,10 +12,13 @@ Homepage - {{ block.super }}
 {% block content %}
 <h1>Many POSTS much WOW!</h1>
 <p>insert applause</p>
+{% paginate posts %}
 {% for post in posts %}
+
     <h3>{{ post.text }}</h3>
     <p> Twitted by: {{ post.user }} at {{ post.created_at }}
 {% endfor %}
+{% show_more %}
 
 {% endblock content %}
 

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     # 'allauth',
     'django_gravatar',
     'django_extensions',
+    'el_pagination',
 
 
     # my apps

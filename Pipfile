@@ -22,6 +22,7 @@ pillow = "*"
 django-gravatar2 = "*"
 psycopg2 = "*"
 django-extensions = "*"
+django-el-pagination = "*"
 
 [requires]
 python_version = "3.7"
