@@ -14,6 +14,9 @@ import os
 import django_heroku
 from dotenv import load_dotenv
 
+
+
+
 load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
     # 'allauth',
     'django_gravatar',
     'django_extensions',
+    'endless_pagination',
     'el_pagination',
 
 
@@ -80,7 +84,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request', ## For EL-pagination
+            
+                
             ],
         },
     },
