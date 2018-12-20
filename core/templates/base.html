@@ -34,18 +34,6 @@
         <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'auth_login' %}">Login</a>
         <a class="f6 f5-l link bg-animate black-80 hover-bg-light-yellow dib pa3 ph4-l" href="{% url 'registration_register' %}">Register</a>
       {% endif %}
-      {% load gravatar %}
-        {% gravatar_url user.email 150 %}
-        # https://secure.gravatar.com/avatar/hash.jpg?size=150
-
-        {% gravatar user.email 150 %}
-        # <img class="gravatar" src="https://secure.gravatar.com/avatar/hash.jpg?size=150" width="150" height="150" alt="" />
-
-        {% gravatar user.email 150 "user@example.com" %}
-        # <img class="gravatar" src="https://secure.gravatar.com/avatar/hash.jpg?size=150" width="150" height="150" alt="user@example.com" />
-
-        {% gravatar_profile_url user.email %}
-        # https://secure.gravatar.com/hash
     </nav>
   </header>
 
