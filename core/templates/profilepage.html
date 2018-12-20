@@ -42,7 +42,7 @@
                   {% comment %} Tweets generated here {% endcomment %}
                   <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
                     <h1 class="f3 athelas mt0 lh-title">${post.user.username}</h1>
-                    <p class="f6 ml2 lh-copy gray mv0">Followed by <span class="ttu"><a href="#">${post.user.followers}</a></span></p>
+                    <p class="f6 ml2 lh-copy gray mv0">Followed by <span class="ttu"><a href="#">${post.user.followers}</a></span></p><p></p>
                     <p class="f6 ml2 lh-copy gray mv0">Following <span class="ttu"><a href="#">${post.user.users_followed}</a></span></p>
                    
                   </div>
@@ -59,7 +59,7 @@
                   {% comment %} Responses generated here {% endcomment %}
                   <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
                     <h1 class="f3 athelas mt0 lh-title">${post.user.username}</h1>
-                    <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${post.user}</a> <small>on ${response.created_at}</small></span></p>
+                    <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${post.response}</a> <small>on ${response.created_at}</small></span></p>
                   </div>
                 </div>
                 </div>
