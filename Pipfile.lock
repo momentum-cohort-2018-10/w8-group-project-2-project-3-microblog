@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a9fea65cd312337a15c774431563d1174819a32a9696cd1f70e370d477a4f2de"
+            "sha256": "08930f818fc4e51cb4ba50f54dd8ed8b697fa0a140f4f50b4d5d7a696d342908"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -74,6 +74,13 @@
             "index": "pypi",
             "version": "==3.2.4"
         },
+        "django-endless-pagination-vue": {
+            "hashes": [
+                "sha256:05dd0291851c31190d5077230a68417e2a04eac7c9ec9ca5449297ee2288f5cd"
+            ],
+            "index": "pypi",
+            "version": "==1.4"
+        },
         "django-extensions": {
             "hashes": [
                 "sha256:8317a3fe479b1ba3e3a04ecf33fb8d6ccf09bb18f30eab64e34c40a593741d26",
@@ -120,6 +127,14 @@
             ],
             "index": "pypi",
             "version": "==1.0.1"
+        },
+        "gunicorn": {
+            "hashes": [
+                "sha256:aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471",
+                "sha256:fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"
+            ],
+            "index": "pypi",
+            "version": "==19.9.0"
         },
         "idna": {
             "hashes": [

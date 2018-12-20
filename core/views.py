@@ -5,10 +5,22 @@ from core.models import Post, User, Follow, Response
 from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
 
 
+
+
 def index(request):
+    return render(request, 'index.html')
+
+
+# @login_required
+def profile(request):
     posts = Post.objects.all()
-    return render(request, 'index.html', {
+    user_posts = []
+    if request.user.is_authenticated:
+        user_posts = request.user.user_posts.all()
+    return render(request, 'profilepage.html', {
         'posts': posts,
+        'user_posts': user_posts,
+
     })
 
 
