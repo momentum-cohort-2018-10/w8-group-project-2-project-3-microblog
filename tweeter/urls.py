@@ -38,7 +38,7 @@ urlpatterns = [
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('profile/', views.profile, name='profile'),
     path('admin/', admin.site.urls),
-    path('', views.post_list, name='home'),
+    path('', views.index, name='home'),
     path('test_vue/', views.test_vue, name='test_vue'),
     path(
         'register/',

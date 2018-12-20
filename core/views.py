@@ -8,10 +8,8 @@ from django.contrib.auth import authenticate, login
 
 
 def index(request):
-    posts = Post.objects.all()
-    return render(request, 'index.html', {
-        'posts': posts,
-    })
+    return render(request, 'index.html')
+
 
 # @login_required
 def profile(request):
@@ -24,19 +22,6 @@ def profile(request):
         'user_posts': user_posts,
 
     })
-
-
-
-def post_list(request,
-    template='post_list.html',
-    page_template='index.html'):
-    context = {
-        'post_list': Post.objects.all(),
-        'page_template': page_template,
-    }
-    if request.is_ajax():
-        template = page_template
-    return render(request, template, context)
 
 def test_vue(request):
     return render(request, 'test_vue.html')
