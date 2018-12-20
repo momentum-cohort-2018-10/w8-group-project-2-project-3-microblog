@@ -3,18 +3,19 @@
 <html>
 
 <head>
-    <title>
-        {% block title %}
-        TWEETER
-        {% endblock title %}
-    </title>
-    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% block header %}{% endblock header %}
-    <script src="{% static 'js/vue.js' %}" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.js" defer></script>
-    <script src="{% static 'js/app.js' %}" defer></script>
-    <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
-    <script src="/path/to/infinite-scroll.pkgd.min.js"></script>
+  <title>
+    {% block title %}
+    TWEETER
+    {% endblock title %}
+  </title>
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% block header %}{% endblock header %}
+  <script src="{% static 'js/vue.js' %}" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.js" defer></script>
+  <script src="{% static 'js/app.js' %}" defer></script>
+  <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
+  <script src="/path/to/infinite-scroll.pkgd.min.js"></script>
 </head>
 
 <body>
@@ -22,22 +23,22 @@
     <h1 class="mt2 mb0 baskerville i fw1 f1">Tweeter</h1>
     <h2 class="mt2 mb0 f6 fw4 ttu tracked">Come share your thoughts</h2>
     <nav class="bt bb tc mw7 center mt4">
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="{% url 'home' %}">Home</a>
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-light-green dib pa3 ph4-l" href="{% url 'about' %}">About</a>
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'test_vue' %}">Test</a>
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'core:post-list' %}">API</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="{% url 'home' %}">Home</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-green dib pa3 ph4-l" href="{% url 'about' %}">About</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'test_vue' %}">Test</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'core:post-list' %}">API</a>
       {% if user.is_authenticated %}
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'auth_logout' %}">Logout</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'auth_logout' %}">Logout</a>
       {% else %}
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'auth_login' %}">Login</a>
-        <a class="f6 f5-l link bg-animate black-80 hover-bg-light-yellow dib pa3 ph4-l" href="{% url 'registration_register' %}">Register</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'auth_login' %}">Login</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-yellow dib pa3 ph4-l" href="{% url 'registration_register' %}">Register</a>
       {% endif %}
     </nav>
   </header>
 
   {% block content %}
   {% endblock content %}
-  
+
   {% block footer %}
   {% endblock footer %}
 

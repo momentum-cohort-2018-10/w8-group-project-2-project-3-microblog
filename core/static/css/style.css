@@ -1,0 +1,67 @@
+body {
+    background-color: rgb(227, 245, 242);
+    }
+
+header {
+    background-color: #1B77AE;
+}
+
+.tweet {
+    background-color: #C3FAFB;
+}
+
+.tweet-bg {
+    background-color: #40E8FB;
+}
+
+.social {
+    display: flex;
+    flex-wrap: nowrap;
+
+}
+
+.header {
+    text-align: center;
+    font-family: 'Abril Fatface', cursive;
+    font-size: 35px;
+    
+   
+}
+
+.card-container {
+
+    display: flex;
+    
+}
+
+.card-one {
+
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+.card-two {
+
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+.card-three {
+
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+.card-four {
+
+    display: flex;
+    justify-content: center
+    
+  }
+
