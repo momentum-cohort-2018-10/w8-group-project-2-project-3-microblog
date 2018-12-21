@@ -14,6 +14,9 @@ import os
 import django_heroku
 from dotenv import load_dotenv
 
+
+
+
 load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -49,12 +52,14 @@ INSTALLED_APPS = [
     # 'allauth',
     'django_gravatar',
     'django_extensions',
+    'endless_pagination',
     'el_pagination',
 
 
     # my apps
     'core',
     'api',
+    'templatetags',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +85,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request', ## For EL-pagination
+            
+                
             ],
+
+            'libraries':{
+                'app_tags': 'templatetags.app_tags',
+            }
         },
     },
 ]
@@ -154,6 +164,7 @@ REST_FRAMEWORK = {
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
+EL_PAGINATION_PER_PAGE = 7
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'testing@example.com'
@@ -167,3 +178,10 @@ LOGIN_REDIRECT_URL = "home"
 django_heroku.settings(locals())
 
 AUTH_USER_MODEL = "core.User"
+
+# GRAVATAR_URL = 'http://www.gravatar.com/'
+# GRAVATAR_BASE_URL = 'https://secure.gravatar.com/'
+# GRAVATAR_DEFAULT_SIZE = '80'
+# GRAVATAR_DEFAULT_IMAGE = 'mm'
+# GRAVATAR_DEFAULT_RATING = 'g'
+# GRAVATAR_DEFAULT_SECURE = True

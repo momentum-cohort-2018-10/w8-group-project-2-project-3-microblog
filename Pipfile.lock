@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "12fea9be5dda0dbd42e42a2d91675a34eafa0a8fe9c2af80204d26393db2539a"
+            "sha256": "08930f818fc4e51cb4ba50f54dd8ed8b697fa0a140f4f50b4d5d7a696d342908"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -73,6 +73,13 @@
             ],
             "index": "pypi",
             "version": "==3.2.4"
+        },
+        "django-endless-pagination-vue": {
+            "hashes": [
+                "sha256:05dd0291851c31190d5077230a68417e2a04eac7c9ec9ca5449297ee2288f5cd"
+            ],
+            "index": "pypi",
+            "version": "==1.4"
         },
         "django-extensions": {
             "hashes": [
