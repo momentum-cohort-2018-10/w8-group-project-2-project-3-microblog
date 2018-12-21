@@ -29,13 +29,22 @@
           </article>
         </div>
       </div>
-      <div class="fl w-75 w-75-ns pa2">
+      <div class="fl w-100 w-75-ns pa2">
         <div class="outline bg-white pv4">
-          {% comment %} Dynamically generated content {% endcomment %}
           <section class="mw7 center">
-            <article class="pv3 bt bb b--black-10 ph1 ph0-l">
+          {% comment %} Add a post through api {% endcomment %}
+
+
+            <div class="pv3 bt bb b--black-10 ph1 ph0-l">
               <p> Add a tweet</p>
-            </article>
+                <form method="POST" v-on:submit.prevent="addPost()">
+                  {% csrf_token %}
+                  <label for="post_text">Decree</label>
+                  <textarea type="text" v-model="newPost.text" placeholder="Make your decree" required="required"></textarea>
+                  <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                </form>
+            </div>
+            {% comment %} Dynamically generated content {% endcomment %}
             <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
               <div class="flex flex-column flex-row-ns">
                 <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
