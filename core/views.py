@@ -8,18 +8,21 @@ from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar
 def index(request):
     return render(request, 'index.html')
 
-
-# @login_required
 def profile(request):
-    posts = Post.objects.all()
-    user_posts = []
-    if request.user.is_authenticated:
-        user_posts = request.user.user_posts.all()
-    return render(request, 'profilepage.html', {
-        'posts': posts,
-        'user_posts': user_posts,
+    return render(request, 'profilepage.html')
 
-    })
+
+# # @login_required
+# def profile(request):
+#     posts = Post.objects.get(pk=pk)
+#     user_posts = []
+#     if request.user.is_authenticated:
+#         user_posts = request.user.user_posts.all()
+#     return render(request, 'profilepage.html', {
+#         'posts': posts,
+#         'user_posts': user_posts,
+
+    # })
 
 
 # def gravatar(request):

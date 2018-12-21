@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'el_pagination',
     'allauth.socialaccount.providers.github',
 
+
     # my apps
     'core',
     'api',

@@ -12,10 +12,12 @@ const posts = new Vue({
     currentPost: {},
     message: null,
     newPost: { 'text': null },
+    search_term: '',
+    
   },
   mounted: function() {
     this.getPosts()
-    this.getUsers()
+
   },
   methods: {
     toggle: function(post) {
@@ -30,14 +32,18 @@ const posts = new Vue({
       return this.active.includes(post.pk)
     },
     getPosts: function() {
-      this.loading = true
-      this.$http.get('/api/posts/').then((response) => {
-        this.posts = response.data
-        this.loading = false
+      let api_url = '/api/posts/';
+      if(this.search_term!==''||this.search_term!==null) {
+        api_url = `/api/posts/?search=${this.search_term}`
+      }
+      this.loading = true;
+      this.$http.get(api_url).then((response) => {
+        this.posts = response.data;
+        this.loading = false;
       })
       .catch((err) => {
-        this.loading = false
-        console.log(err)
+        this.loading = false;
+        console.log(err);
       })
     },
     getPost: function(post) {
@@ -55,6 +61,17 @@ const posts = new Vue({
       this.loading = true
       this.$http.get('/api/users/').then((response) => {
         this.users = response.data
+        this.loading = false
+      })
+      .catch((err) => {
+        this.loading = false
+        console.log(err)
+      })
+    },
+    getUser: function(post) {
+      this.loading = true
+      this.$http.get(`/api/users/${user.pk}/`).then((response) => {
+        this.currentUser = response.data
         this.loading = false
       })
       .catch((err) => {
@@ -85,12 +102,10 @@ const posts = new Vue({
         this.loading = false
         console.log(err)
       })
-    },
-    toggle: function () {
-      this.isActive = !this.isActive
     }
   }
-})
+});
+
 
 // const show = Vue.component('toggle-responses', {
 //   template: `
