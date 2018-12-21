@@ -5,68 +5,73 @@
 {% endblock title %}
 
 {% block content %}
-  <div id="vue-container">
-    <div class="mw9 center ph3-ns">
-      <div class="cf ph2-ns">
-        <div class="fl w-25 pa2">
-          <div class="outline bg-white pv4">
-          {% comment %} Profile card {% endcomment %}
-            <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-              <div class="tc">
-                <img src="http://tachyons.io/img/avatar_1.jpg" class="br-100 h3 w3 dib" title="Photo of a kitty staring at you">
-                <h1 class="f4">Mimi Whitehouse</h1>
-                <hr class="mw3 bb bw1 b--black-10">
-              </div>
-              <p class="lh-copy measure center f6 black-70">
-                Quite affectionate and outgoing.
-                She loves to get chin scratches and will
-                roll around on the floor waiting for you give her more of them.
-              </p>
-            </article>
-          </div>
+<div id="vue-container">
+  <div class="mw9 center ph3-ns">
+    <div class="cf ph2-ns">
+      <div class="fl w-25 pa2">
+        <div class="outline bg-white pv4">
+        {% comment %} Profile card {% endcomment %}
+          <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+            <div class="tc">
+              <img src="http://tachyons.io/img/avatar_1.jpg" class="br-100 h3 w3 dib" title="Photo of a kitty staring at you">
+              <h1 class="f4">Mimi Whitehouse</h1>
+              <hr class="mw3 bb bw1 b--black-10">
+            </div>
+            <p class="lh-copy measure center f6 black-70">
+              Quite affectionate and outgoing.
+              She loves to get chin scratches and will
+              roll around on the floor waiting for you give her more of them.
+            </p>
+          </article>
         </div>
-        <div class="fl w-75 w-75-ns pa2">
-          <div class="outline bg-white pv4">
-            {% comment %} Dynamically generated content {% endcomment %}
-            <section class="mw7 center">
-              <h2 class="athelas ph3 tc ph0-l">Feed</h2>
-              <article v-for="post in posts" class="pv3 bt bb b--black-10 ph1 ph0-l">
-                <div class="flex flex-column flex-row-ns">
-                  <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
-                    {% comment %} user avatar {% endcomment %}
-                    <div class="tc">
-                      <img src="http://tachyons.io/img/logo.jpg" class="br3 h4 w4 dib" alt="avatar image">
-                      <div><a @click="toggle(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a></div>
-                    </div>
-                  </div>
-                  {% comment %} Tweets generated here {% endcomment %}
-                  <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                    <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
-                    <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${post.user.username}</a></span></p>
-                    <time class="f6 ml2 db gray">${post.created_at}</time>
+      </div>
+      <div class="fl w-75 w-75-ns pa2">
+        <div class="outline bg-white pv4">
+          {% comment %} Dynamically generated content {% endcomment %}
+          <section class="mw7 center">
+            <article class="pv3 bt bb b--black-10 ph1 ph0-l">
+              <p> Add a tweet</p>
+            </article>
+            <article v-for="(post, index) in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
+            {% comment %} <toggle-responses :post="post"></toggle-responses> {% endcomment %}
+              <div class="flex flex-column flex-row-ns">
+                <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                  {% comment %} user avatar {% endcomment %}
+                  <div class="tc">
+                    <a :href="post.user.url"><img src="http://tachyons.io/img/logo.jpg" class="br3 h4 w4 dib" alt="avatar image"></a>
+                    <div><a :post='post' :id="post.pk" @click="toggle(post)" v-on:click="getPost(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a></div>
                   </div>
                 </div>
-                {% comment %} Responses container {% endcomment %}
-                <div v-show="isActive" v-for="response in post.post_response"class="mt1 ml4">
+                {% comment %} Tweets generated here {% endcomment %}
+                <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                  <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
+                  <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${post.user.username}</a></span></p>
+                  <time class="f6 ml2 db gray">${post.created_at}</time>
+                </div>
+              </div>
+              {% comment %} Responses container {% endcomment %}
+              <div v-if="activated(post)">
+                <div v-for="response in post.post_response"class="mt1 ml4">
                   <div class="flex flex-column flex-row-ns">
-                  <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
-                    {% comment %} small user avatar {% endcomment %}
-                    <div class="tc">
-                      <img src="http://tachyons.io/img/logo.jpg" class="br3 h3 v-mid w3 dib" alt="avatar image">
+                    <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                      {% comment %} small user avatar {% endcomment %}
+                      <div class="tc">
+                        <img src="http://tachyons.io/img/logo.jpg" class="br3 h3 w3 dib" alt="avatar image">
+                      </div>
+                    </div>
+                    {% comment %} Responses generated here {% endcomment %}
+                    <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                      <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
+                      <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
                     </div>
                   </div>
-                  {% comment %} Responses generated here {% endcomment %}
-                  <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                    <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
-                    <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
-                  </div>
                 </div>
-                </div>
-              </article>
-            </section>
-          </div>
+              </div>
+            </article>
+          </section>
         </div>
       </div>
     </div>
   </div>
+</div>
 {% endblock content %}

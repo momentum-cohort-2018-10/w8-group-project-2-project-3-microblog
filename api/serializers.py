@@ -2,7 +2,6 @@ from rest_framework import serializers
 from core.models import User, Post, Follow, Response
 
 
-
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
@@ -16,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'url', 'users_followed', 'followers', 'pk')
+        fields = ('username', 'url', 'users_followed', 'followers', 'pk',)
 
 
 class ResponseSerializer(serializers.ModelSerializer):
