@@ -3,14 +3,12 @@ const posts = new Vue({
   delimiters: ['${','}'],
   data: {
     posts: [],
-    isActive: false,
+    active: [],
     loading: false,
     currentPost: {},
     message: null,
+    users: [],
     newPost: { 'text': null },
-    users: []
-  },
-
   beforeMount: function() {
     this.getPosts()
   },
@@ -18,6 +16,17 @@ const posts = new Vue({
     this.getUsers()
   },
   methods: {
+    toggle: function(post) {
+      if (this.active.includes(post.pk)) {
+        this.active.splice(this.active.indexOf(post.pk), 1)
+      }
+      else {
+        this.active.push(post.pk)
+      }
+    },
+    activated: function(post) {
+      return this.active.includes(post.pk)
+    },
     getPosts: function() {
       this.loading = true
       this.$http.get('/api/posts/').then((response) => {
@@ -40,9 +49,9 @@ const posts = new Vue({
     //     }
     //   };
     // },
-    getPost: function() {
+    getPost: function(post) {
       this.loading = true
-      this.$http.get('/api/posts/${pk}/').then((response) => {
+      this.$http.get(`/api/posts/${post.pk}/`).then((response) => {
         this.currentPost = response.data
         this.loading = false
       })
@@ -64,7 +73,7 @@ const posts = new Vue({
     },
     addPost: function() {
       this.loading = true
-      this.$http.post('/api/posts/', this.newPost).then((response) => {
+      this.$http.post(`/api/posts/`, this.newPost).then((response) => {
         this.loading = false
         this.getPosts()
       })
@@ -73,9 +82,10 @@ const posts = new Vue({
         console.log(err)
       })
     },
-    deletePost: function() {
+    deletePost: function(post) {
       this.loading = true
-      this.$http.delete('/api/posts/${pk}/').then((response) => {
+      this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
+
         this.loading = false
         this.getPosts()
       })
@@ -83,15 +93,28 @@ const posts = new Vue({
         this.loading = false
         console.log(err)
       })
-    },
-    toggle: function () {
-      this.isActive = !this.isActive
     }
   }
 });
 
-
-
+const show = Vue.component('toggle-responses', {
+  template: `
+    <div>
+      <a @click="toggle()" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
+    </div>
+  `,
+  props: ['post'],
+  methods: {
+    toggle() {
+      this.isActive = !this.isActive
+    }
+  },
+  data() {
+    return {
+      isActive: false
+    }
+  }
+})
 
 
 // const posts = new Vue({
