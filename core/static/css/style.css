@@ -12,4 +12,60 @@ header {
 
 .tweet-bg {
     background-color: #40E8FB;
+
 }
+
+.social {
+    display: flex;
+    flex-wrap: nowrap;
+
+}
+
+.header {
+    text-align: center;
+    font-family: 'Abril Fatface', cursive;
+    font-size: 35px;
+    
+   
+}
+
+.card-container {
+
+    display: flex;
+    
+}
+
+.card-one {
+
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+.card-two {
+
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+.card-three {
+
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+.card-four {
+
+    display: flex;
+    justify-content: center
+    
+  }
+
+
+}
+

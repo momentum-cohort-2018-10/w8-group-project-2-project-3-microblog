@@ -1,3 +1,171 @@
+
+{% extends 'base.html' %} {% block title %}
+About - {{ block.super }}
+{% endblock title %}
+{% block content %}
+
+
+
+<div class="header">
+    <h1>ABOUT THE TEAM</h1>
+</div>
+<div class="card-container">
+
+    <div class="card-one">
+        <footer class="pv4 ph3 ph5-ns tc">
+            <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                <div class="tc">
+                    <img src="https://avatars3.githubusercontent.com/u/44574217?s=400&v=4" class="br-100 h4 w4 dib ba b--black-05 pa2"
+                        title="Princess Tee">
+                    <h1 class="f3 mb2">Tiana Horne</h1>
+                    <h2 class="f5 fw4 gray mt0">Princess Tiana</h2>
+                </div>
+            </article>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="https://www.facebook.com/tiana.horn7"
+                title="">
+                <svg data-icon="facebook" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>facebook icon</title>
+                    <path d="M8 12 L13 12 L13 8 C13 2 17 1 24 2 L24 7 C20 7 19 7 19 10 L19 12 L24 12 L23 18 L19 18 L19 30 L13 30 L13 18 L8 18 z"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="#" title="">
+                <svg data-icon="twitter" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>twitter icon</title>
+                    <path d="M2 4 C6 8 10 12 15 11 A6 6 0 0 1 22 4 A6 6 0 0 1 26 6 A8 8 0 0 0 31 4 A8 8 0 0 1 28 8 A8 8 0 0 0 32 7 A8 8 0 0 1 28 11 A18 18 0 0 1 10 30 A18 18 0 0 1 0 27 A12 12 0 0 0 8 24 A8 8 0 0 1 3 20 A8 8 0 0 0 6 19.5 A8 8 0 0 1 0 12 A8 8 0 0 0 3 13 A8 8 0 0 1 2 4"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib br-100 h2 w2 mr3 pa2 bg-near-white ba b--black-10" href="https://github.com/tiana-horn"
+                title="">
+                <svg data-icon="github" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>github icon</title>
+                    <path d="M0 18 C0 12 3 10 3 9 C2.5 7 2.5 4 3 3 C6 3 9 5 10 6 C12 5 14 5 16 5 C18 5 20 5 22 6 C23 5 26 3 29 3 C29.5 4 29.5 7 29 9 C29 10 32 12 32 18 C32 25 30 30 16 30 C2 30 0 25 0 18 M3 20 C3 24 4 28 16 28 C28 28 29 24 29 20 C29 16 28 14 16 14 C4 14 3 16 3 20 M8 21 A1.5 2.5 0 0 0 13 21 A1.5 2.5 0 0 0 8 21 M24 21 A1.5 2.5 0 0 0 19 21 A1.5 2.5 0 0 0 24 21 z"></path>
+                </svg>
+            </a>
+
+
+        </footer>
+    </div>
+
+
+
+
+    <div class="card-two">
+        <footer class="pv4 ph3 ph5-ns tc">
+            <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                <div class="tc">
+                    <img src="data:image/jpeg;base64,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"
+                        class="br-100 h4 w4 dib ba b--black-05 pa2" title="Photo of a kitty staring at you">
+                    <h1 class="f3 mb2">Sean Houde</h1>
+                    <h2 class="f5 fw4 gray mt0">Master and Commander</h2>
+                </div>
+            </article>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="https://www.facebook.com/sean.w.houde"
+                title="">
+                <svg data-icon="facebook" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>facebook icon</title>
+                    <path d="M8 12 L13 12 L13 8 C13 2 17 1 24 2 L24 7 C20 7 19 7 19 10 L19 12 L24 12 L23 18 L19 18 L19 30 L13 30 L13 18 L8 18 z"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="#" title="">
+                <svg data-icon="twitter" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>twitter icon</title>
+                    <path d="M2 4 C6 8 10 12 15 11 A6 6 0 0 1 22 4 A6 6 0 0 1 26 6 A8 8 0 0 0 31 4 A8 8 0 0 1 28 8 A8 8 0 0 0 32 7 A8 8 0 0 1 28 11 A18 18 0 0 1 10 30 A18 18 0 0 1 0 27 A12 12 0 0 0 8 24 A8 8 0 0 1 3 20 A8 8 0 0 0 6 19.5 A8 8 0 0 1 0 12 A8 8 0 0 0 3 13 A8 8 0 0 1 2 4"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib br-100 h2 w2 mr3 pa2 bg-near-white ba b--black-10" href="https://github.com/SeanHoude"
+                title="">
+                <svg data-icon="github" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>github icon</title>
+                    <path d="M0 18 C0 12 3 10 3 9 C2.5 7 2.5 4 3 3 C6 3 9 5 10 6 C12 5 14 5 16 5 C18 5 20 5 22 6 C23 5 26 3 29 3 C29.5 4 29.5 7 29 9 C29 10 32 12 32 18 C32 25 30 30 16 30 C2 30 0 25 0 18 M3 20 C3 24 4 28 16 28 C28 28 29 24 29 20 C29 16 28 14 16 14 C4 14 3 16 3 20 M8 21 A1.5 2.5 0 0 0 13 21 A1.5 2.5 0 0 0 8 21 M24 21 A1.5 2.5 0 0 0 19 21 A1.5 2.5 0 0 0 24 21 z"></path>
+                </svg>
+            </a>
+
+
+        </footer>
+    </div>
+
+
+
+    <div class="card-three">
+        <footer class="pv4 ph3 ph5-ns tc">
+            <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                <div class="tc">
+                    <img src="https://activerain-store.s3.amazonaws.com/agents/061/463061/large/web_bw.jpg?1414154633"
+                        class="br-100 h4 w4 dib ba b--black-05 pa2" title="Photo of a kitty staring at you">
+                    <h1 class="f3 mb2">Steve Marks</h1>
+                    <h2 class="f5 fw4 gray mt0">Master Gravitar</h2>
+                </div>
+            </article>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="https://www.facebook.com/stevenpowellmarks"
+                title="">
+                <svg data-icon="facebook" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>facebook icon</title>
+                    <path d="M8 12 L13 12 L13 8 C13 2 17 1 24 2 L24 7 C20 7 19 7 19 10 L19 12 L24 12 L23 18 L19 18 L19 30 L13 30 L13 18 L8 18 z"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="#" title="">
+                <svg data-icon="twitter" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>twitter icon</title>
+                    <path d="M2 4 C6 8 10 12 15 11 A6 6 0 0 1 22 4 A6 6 0 0 1 26 6 A8 8 0 0 0 31 4 A8 8 0 0 1 28 8 A8 8 0 0 0 32 7 A8 8 0 0 1 28 11 A18 18 0 0 1 10 30 A18 18 0 0 1 0 27 A12 12 0 0 0 8 24 A8 8 0 0 1 3 20 A8 8 0 0 0 6 19.5 A8 8 0 0 1 0 12 A8 8 0 0 0 3 13 A8 8 0 0 1 2 4"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib br-100 h2 w2 mr3 pa2 bg-near-white ba b--black-10" href="https://github.com/stevelknievel"
+                title="">
+                <svg data-icon="github" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>github icon</title>
+                    <path d="M0 18 C0 12 3 10 3 9 C2.5 7 2.5 4 3 3 C6 3 9 5 10 6 C12 5 14 5 16 5 C18 5 20 5 22 6 C23 5 26 3 29 3 C29.5 4 29.5 7 29 9 C29 10 32 12 32 18 C32 25 30 30 16 30 C2 30 0 25 0 18 M3 20 C3 24 4 28 16 28 C28 28 29 24 29 20 C29 16 28 14 16 14 C4 14 3 16 3 20 M8 21 A1.5 2.5 0 0 0 13 21 A1.5 2.5 0 0 0 8 21 M24 21 A1.5 2.5 0 0 0 19 21 A1.5 2.5 0 0 0 24 21 z"></path>
+                </svg>
+            </a>
+
+
+        </footer>
+    </div>
+
+    <div class="card-four">
+        <footer class="pv4 ph3 ph5-ns tc">
+            <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                <div class="tc">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Frankenstein%27s_monster_%28Boris_Karloff%29.jpg/260px-Frankenstein%27s_monster_%28Boris_Karloff%29.jpg"
+                        class="br-100 h4 w4 dib ba b--black-05 pa2" title="Photo of a kitty staring at you">
+                    <h1 class="f3 mb2">Taylor Homes</h1>
+                    <h2 class="f5 fw4 gray mt0">Code Corpse</h2>
+                </div>
+            </article>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="https://www.facebook.com/taylor.homes.5"
+                title="">
+                <svg data-icon="facebook" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>facebook icon</title>
+                    <path d="M8 12 L13 12 L13 8 C13 2 17 1 24 2 L24 7 C20 7 19 7 19 10 L19 12 L24 12 L23 18 L19 18 L19 30 L13 30 L13 18 L8 18 z"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib h2 w2 br-100 mr3 pa2 bg-near-white ba b--black-10" href="https://twitter.com/Sr_Homes?lang=en"
+                title="">
+                <svg data-icon="twitter" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>twitter icon</title>
+                    <path d="M2 4 C6 8 10 12 15 11 A6 6 0 0 1 22 4 A6 6 0 0 1 26 6 A8 8 0 0 0 31 4 A8 8 0 0 1 28 8 A8 8 0 0 0 32 7 A8 8 0 0 1 28 11 A18 18 0 0 1 10 30 A18 18 0 0 1 0 27 A12 12 0 0 0 8 24 A8 8 0 0 1 3 20 A8 8 0 0 0 6 19.5 A8 8 0 0 1 0 12 A8 8 0 0 0 3 13 A8 8 0 0 1 2 4"></path>
+                </svg>
+            </a>
+            <a class="link dim gray dib br-100 h2 w2 mr3 pa2 bg-near-white ba b--black-10" href="https://github.com/TaylorHomes"
+                title="">
+                <svg data-icon="github" viewBox="0 0 32 32" style="fill:currentcolor">
+                    <title>github icon</title>
+                    <path d="M0 18 C0 12 3 10 3 9 C2.5 7 2.5 4 3 3 C6 3 9 5 10 6 C12 5 14 5 16 5 C18 5 20 5 22 6 C23 5 26 3 29 3 C29.5 4 29.5 7 29 9 C29 10 32 12 32 18 C32 25 30 30 16 30 C2 30 0 25 0 18 M3 20 C3 24 4 28 16 28 C28 28 29 24 29 20 C29 16 28 14 16 14 C4 14 3 16 3 20 M8 21 A1.5 2.5 0 0 0 13 21 A1.5 2.5 0 0 0 8 21 M24 21 A1.5 2.5 0 0 0 19 21 A1.5 2.5 0 0 0 24 21 z"></path>
+                </svg>
+            </a>
+
+
+        </footer>
+    </div>
+
+
+
+
+
+</div>
+
+
+<!-- 
+
 {% extends 'base.html' %} 
 
 {% load endless %}
@@ -42,4 +210,4 @@ About - {{ block.super }} {% endblock title %}
     {% show_more %}
 
 
-{% endblock content %}
+{% endblock content %} -->
