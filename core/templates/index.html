@@ -38,7 +38,7 @@
             <div class="pv3 bt bb b--black-10 ph1 ph0-l">
               <p> Add a tweet</p>
                 <form method="POST" v-on:submit.prevent="addPost()">
-                  {% csrf_token %}
+                  
                   <label for="post_text">Decree</label>
                   <textarea type="text" v-model="newPost.text" placeholder="Make your decree" required="required"></textarea>
                   <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>

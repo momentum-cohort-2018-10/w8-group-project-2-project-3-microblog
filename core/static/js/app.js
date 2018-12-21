@@ -100,37 +100,24 @@ const posts = new Vue({
   }
 });
 
-function setupCSRF() {
-  var csrftoken = Cookies.get('csrftoken')
-  $.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-      if (!csrfSafeMethod(settings.type) && ~this.crossDomain) {
-        xhr.setRequestHeader('X-CSRFToken', csrftoken)
-      }
-    }
-  })
-}
+// function setupCSRF() {
+//   var csrftoken = Cookies.get('csrftoken')
+//   $.ajaxSetup({
+//     beforeSend: function (xhr, settings) {
+//       if (!csrfSafeMethod(settings.type) && ~this.crossDomain) {
+//         xhr.setRequestHeader('X-CSRFToken', csrftoken)
+//       }
+//     }
+//   })
+// }
 
-function csrfSafeMethod(method) {
-  return (/^GET|HEAD|OPTIONS|TRACE)$/.test(method))
-}
+// function csrfSafeMethod(method) {
+//   return (/^GET|HEAD|OPTIONS|TRACE)$/.test(method))
+// }
 
-setupCSRF()
+// setupCSRF()
 
-client = RequestsClient()
-
-# Obtain a CSRF token.
-response = client.get('http://testserver/homepage/')
-assert response.status_code == 200
-csrftoken = response.cookies['csrftoken']
-
-# Interact with the API.
-response = client.post('http://testserver/organisations/', json={
-    'name': 'MegaCorp',
-    'status': 'active'
-}, headers={'X-CSRFToken': csrftoken})
-assert response.status_code == 200
-
+// client = RequestsClient()
 
 // const show = Vue.component('toggle-responses', {
 //   template: `

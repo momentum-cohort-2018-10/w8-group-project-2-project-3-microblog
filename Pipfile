@@ -25,6 +25,7 @@ django-extensions = "*"
 django-el-pagination = "*"
 gunicorn = "*"
 django-endless-pagination-vue = "*"
+djangorestframework-simplejwt = "*"
 
 [requires]
 python_version = "3.7"

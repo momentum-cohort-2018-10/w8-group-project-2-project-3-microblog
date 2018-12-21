@@ -28,9 +28,9 @@ class PostViewSet(mixins.CreateModelMixin,
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    @csrf_exempt
-    def dispatch(self, *args, **kwargs):
-        return super(PostViewSet, self).dispatch(*args, **kwargs)
+    # @csrf_exempt
+    # def dispatch(self, *args, **kwargs):
+    #     return super(PostViewSet, self).dispatch(*args, **kwargs)
         
     # def get_queryset(self):
     #     queryset = self.request.user.user_posts
