@@ -10,10 +10,8 @@ const posts = new Vue({
     message: null,
     newPost: { 'text': null },
   },
-  beforeMount: function() {
-    this.getPosts()
-  },
   mounted: function() {
+    this.getPosts()
     this.getUsers()
   },
   methods: {
@@ -100,11 +98,7 @@ const posts = new Vue({
       this.isActive = !this.isActive
     }
   }
-});
-=======
-    }
-  }
-});
+})
 
 // function setupCSRF() {
 //   var csrftoken = Cookies.get('csrftoken')

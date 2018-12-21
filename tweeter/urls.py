@@ -26,10 +26,6 @@ from django.urls import path, include
 from core import views
 from rest_framework import routers
 from api import views as api_views
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 
 # Router for api url's
 router = routers.DefaultRouter()
@@ -44,8 +40,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', views.index, name='home'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(
         'register/',
         TemplateView.as_view(template_name='register.html'),
