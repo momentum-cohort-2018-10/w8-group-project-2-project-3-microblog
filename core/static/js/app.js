@@ -2,17 +2,18 @@ const posts = new Vue({
   el: '#vue-container',
   delimiters: ['${','}'],
   data: {
+    users: [],
     posts: [],
     active: [],
     loading: false,
     currentPost: {},
     message: null,
-    users: [],
     newPost: { 'text': null },
+  },
   beforeMount: function() {
     this.getPosts()
   },
-  mounted: function(){
+  mounted: function() {
     this.getUsers()
   },
   methods: {
@@ -97,24 +98,24 @@ const posts = new Vue({
   }
 });
 
-const show = Vue.component('toggle-responses', {
-  template: `
-    <div>
-      <a @click="toggle()" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
-    </div>
-  `,
-  props: ['post'],
-  methods: {
-    toggle() {
-      this.isActive = !this.isActive
-    }
-  },
-  data() {
-    return {
-      isActive: false
-    }
-  }
-})
+// const show = Vue.component('toggle-responses', {
+//   template: `
+//     <div>
+//       <a @click="toggle()" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
+//     </div>
+//   `,
+//   props: ['post'],
+//   methods: {
+//     toggle() {
+//       this.isActive = !this.isActive
+//     }
+//   },
+//   data() {
+//     return {
+//       isActive: false
+//     }
+//   }
+// })
 
 
 // const posts = new Vue({

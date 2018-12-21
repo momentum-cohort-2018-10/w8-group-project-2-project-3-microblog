@@ -36,20 +36,15 @@
             <article class="pv3 bt bb b--black-10 ph1 ph0-l">
               <p> Add a tweet</p>
             </article>
-            <article v-for="(post, index) in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
+            <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
               <div class="flex flex-column flex-row-ns">
                 <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                   {% comment %} user avatar {% endcomment %}
                   <div class="tc">
                     <a :href="post.user.url"><img src="http://tachyons.io/img/logo.jpg" class="br3 h4 w4 dib" alt="avatar image"></a>
-                    <div><a :post='post' :id="post.pk" @click="toggle(post)" v-on:click="getPost(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a></div>
+                    <div>
+                      <a :post='post' :id="post.pk" @click="toggle(post)" v-on:click="getPost(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
                     </div>
-                  </div>
-                  {% comment %} Tweets generated here {% endcomment %}
-                  <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                    <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
-                    <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="profile">${post.user.username}"</a></span></p>
-                    <time class="f6 ml2 db gray">${post.created_at}</time>
                   </div>
                 </div>
                 {% comment %} Tweets generated here {% endcomment %}

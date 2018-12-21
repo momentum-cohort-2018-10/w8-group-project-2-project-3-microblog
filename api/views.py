@@ -16,8 +16,8 @@ class UserViewSet(mixins.CreateModelMixin,
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def get_queryset(self):
-        queryset = self.request.user.posts
+    # def get_queryset(self):
+    #     queryset = self.request.user.posts
         
 
 

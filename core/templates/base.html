@@ -5,21 +5,20 @@
 <head>
     <title>
         {% block title %}
-        TWEETER
+        Decreedly
         {% endblock title %}
     </title>
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" /> {% block header %}{% endblock header %}
     <script src="{% static 'js/vue.js' %}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.js" defer></script>
+    <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js" defer></script>
     <script src="{% static 'js/app.js' %}" defer></script>
-    <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
-    <script src="/path/to/infinite-scroll.pkgd.min.js"></script>
 </head>
 
 <body>
   <header class="bg-white black-80 tc pv4 avenir">
-    <h1 class="mt2 mb0 baskerville i fw1 f1">Tweeter</h1>
+    <h1 class="mt2 mb0 baskerville i fw1 f1">Decreedly</h1>
     <h2 class="mt2 mb0 f6 fw4 ttu tracked">Come share your thoughts</h2>
     <nav class="bt bb tc mw7 center mt4">
         <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="{% url 'home' %}">Home</a>

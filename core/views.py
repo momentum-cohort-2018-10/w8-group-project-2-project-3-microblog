@@ -5,8 +5,6 @@ from core.models import Post, User, Follow, Response
 from django_gravatar.helpers import get_gravatar_url, has_gravatar, get_gravatar_profile_url, calculate_gravatar_hash
 
 
-
-
 def index(request):
     return render(request, 'index.html')
 
@@ -22,11 +20,6 @@ def profile(request):
         'user_posts': user_posts,
 
     })
-
-
-@login_required
-def test_vue(request):
-    return render(request, 'test_vue.html')
 
 
 # def gravatar(request):
