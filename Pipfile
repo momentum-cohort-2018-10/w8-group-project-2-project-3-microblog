@@ -24,6 +24,7 @@ psycopg2 = "*"
 django-extensions = "*"
 django-el-pagination = "*"
 gunicorn = "*"
+django-endless-pagination-vue = "*"
 
 [requires]
 python_version = "3.7"

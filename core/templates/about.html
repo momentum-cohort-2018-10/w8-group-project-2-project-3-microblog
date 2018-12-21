@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %} {% block title %}
 About - {{ block.super }}
 {% endblock title %}
@@ -163,6 +164,50 @@ About - {{ block.super }}
 </div>
 
 
+<!-- 
+
+{% extends 'base.html' %} 
+
+{% load endless %}
+{% load static %}
+{% load staticfiles %}
 
 
-{% endblock content %}
+{% block title %}
+About - {{ block.super }} {% endblock title %}
+{% block content %} <h1>About page</h1>
+
+
+<body>
+    <h2>Entries:</h2>
+    <div id="entries" v-endless-pagination="{'paginateOnScroll': true}"
+    {% include page_template %}
+    </div>
+
+    {% block js %}
+        <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+        <script src="{% static 'endless_pagination/js/module.endless.js' %}"></script>
+
+        new Vue({
+            el: '#entries',
+        });
+    {% endblock %}
+</body>
+
+
+<p>Created by:</p>
+
+<p>Steve Marks</p>
+<p>Taylor Homes</p>
+<p>Tianna Horn</p>
+<p>Sean Houde</p>
+
+
+{% lazy_paginate post_list %}
+    {% for post in post_list %}
+    <h1>{{ post.text }}</h1>
+    {% endfor %}
+    {% show_more %}
+
+
+{% endblock content %} -->
