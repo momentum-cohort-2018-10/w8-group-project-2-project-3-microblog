@@ -15,12 +15,9 @@ const posts = new Vue({
     search_term: '',
     
   },
-  // beforeMount: function() {
-  //   this.getPosts()
-  // },
   mounted: function() {
     this.getPosts()
-    this.getUsers()
+
   },
   methods: {
     toggle: function(post) {
@@ -73,7 +70,7 @@ const posts = new Vue({
     },
     getUser: function(post) {
       this.loading = true
-      this.$http.get(`/api/posts/${user.pk}/`).then((response) => {
+      this.$http.get(`/api/users/${user.pk}/`).then((response) => {
         this.currentUser = response.data
         this.loading = false
       })
@@ -105,18 +102,9 @@ const posts = new Vue({
         this.loading = false
         console.log(err)
       })
-<<<<<<< HEAD
     }
   }
 });
-=======
-    },
-    toggle: function () {
-      this.isActive = !this.isActive
-    }
-  }
-})
->>>>>>> 03ca41d62fa53928dfe2454d386430247cdf36b1
 
 
 // const show = Vue.component('toggle-responses', {
