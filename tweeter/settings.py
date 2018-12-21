@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'el_pagination',
 
 
+
     # my apps
     'core',
     'api',

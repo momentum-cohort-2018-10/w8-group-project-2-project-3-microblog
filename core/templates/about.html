@@ -1,5 +1,7 @@
 
-{% extends 'base.html' %} {% block title %}
+{% extends 'base.html' %} 
+
+{% block title %}
 About - {{ block.super }}
 {% endblock title %}
 {% block content %}
@@ -17,7 +19,7 @@ About - {{ block.super }}
                 <div class="tc">
                     <img src="https://avatars3.githubusercontent.com/u/44574217?s=400&v=4" class="br-100 h4 w4 dib ba b--black-05 pa2"
                         title="Princess Tee">
-                    <h1 class="f3 mb2">Tiana Horne</h1>
+                    <h1 class="f3 mb2">Tiana Horn</h1>
                     <h2 class="f5 fw4 gray mt0">Princess Tiana</h2>
                 </div>
             </article>
@@ -163,51 +165,4 @@ About - {{ block.super }}
 
 </div>
 
-
-<!-- 
-
-{% extends 'base.html' %} 
-
-{% load endless %}
-{% load static %}
-{% load staticfiles %}
-
-
-{% block title %}
-About - {{ block.super }} {% endblock title %}
-{% block content %} <h1>About page</h1>
-
-
-<body>
-    <h2>Entries:</h2>
-    <div id="entries" v-endless-pagination="{'paginateOnScroll': true}"
-    {% include page_template %}
-    </div>
-
-    {% block js %}
-        <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
-        <script src="{% static 'endless_pagination/js/module.endless.js' %}"></script>
-
-        new Vue({
-            el: '#entries',
-        });
-    {% endblock %}
-</body>
-
-
-<p>Created by:</p>
-
-<p>Steve Marks</p>
-<p>Taylor Homes</p>
-<p>Tianna Horn</p>
-<p>Sean Houde</p>
-
-
-{% lazy_paginate post_list %}
-    {% for post in post_list %}
-    <h1>{{ post.text }}</h1>
-    {% endfor %}
-    {% show_more %}
-
-
-{% endblock content %} -->
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from api.serializers import UserSerializer, PostSerializer, ResponseSerializer, FollowSerializer
@@ -15,6 +15,9 @@ class UserViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
+
+
 
     # def get_queryset(self):
     #     queryset = self.request.user.posts
@@ -28,6 +31,8 @@ class PostViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('text',)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
