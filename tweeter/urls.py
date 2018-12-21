@@ -20,6 +20,7 @@ from django.contrib.auth.views import (
     PasswordResetCompleteView,
 )
 from django.contrib import admin
+from django.conf import settings
 from django.views.generic import TemplateView
 from django.urls import path, include
 from core import views
@@ -37,11 +38,11 @@ router.register('posts', api_views.PostViewSet)
 router.register('responses', api_views.ResponseViewSet)
 router.register('follows', api_views.FollowViewSet)
 
-
 urlpatterns = [
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('profile/', views.profile, name='profile'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('', views.index, name='home'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -75,3 +76,9 @@ urlpatterns = [
         name='about'),
     path('accounts/', include('registration.backends.simple.urls')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

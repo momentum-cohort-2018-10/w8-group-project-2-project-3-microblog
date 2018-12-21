@@ -14,9 +14,6 @@ import os
 import django_heroku
 from dotenv import load_dotenv
 
-
-
-
 load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -44,17 +41,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'debug_toolbar',
 
     # third party app
     'registration',
     'mimesis',
     'rest_framework',
     # 'allauth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'django_gravatar',
     'django_extensions',
     'endless_pagination',
     'el_pagination',
-
+    'allauth.socialaccount.providers.github',
 
     # my apps
     'core',
@@ -70,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'tweeter.urls'
@@ -77,7 +80,7 @@ ROOT_URLCONF = 'tweeter.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,8 +89,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-
-            'libraries':{
+            'libraries': {
                 'app_tags': 'templatetags.app_tags',
             }
         },
@@ -176,6 +178,20 @@ LOGIN_REDIRECT_URL = "home"
 django_heroku.settings(locals())
 
 AUTH_USER_MODEL = "core.User"
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+
+INTERNAL_IPS = ['127.0.0.1']
 
 # GRAVATAR_URL = 'http://www.gravatar.com/'
 # GRAVATAR_BASE_URL = 'https://secure.gravatar.com/'

@@ -88,7 +88,6 @@ const posts = new Vue({
     deletePost: function(post) {
       this.loading = true
       this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
-
         this.loading = false
         this.getPosts()
       })
@@ -96,6 +95,13 @@ const posts = new Vue({
         this.loading = false
         console.log(err)
       })
+    },
+    toggle: function () {
+      this.isActive = !this.isActive
+    }
+  }
+});
+=======
     }
   }
 });
