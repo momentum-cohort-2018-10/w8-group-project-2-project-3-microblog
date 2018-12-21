@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'registration',
     'mimesis',
     'rest_framework',
-    # 'allauth',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
