@@ -11,12 +11,16 @@
 
 {% block content %}
 <div id="vue-container">
+
   <div class="mw9 center ph3-ns">
+
     <div class="cf ph2-ns">
       <div class="fl w-25 pa2">
         <div class="outline bg-white pv4">
         {% comment %} Profile card {% endcomment %}
+
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+           
             <div class="tc">
               {% if user.is_authenticated %}
                 <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
@@ -34,43 +38,46 @@
           </article>
         </div>
       </div>
+       <div class="pv3 bt bb b--black-10 ph1 ph0-l ">
+        </div>
+        <form method="POST" v-on:submit.prevent="addPost()">
+                  {% csrf_token %}
+          <button type="submit" class="btn dim fl bg-black white btn-outline-success f2 ">Submit</button>
+         <label for="post_text"></label>
+          <textarea class="fl w-30 dib f3 justify-center items-center pv1 ph2 mr-sm-2" type="text" v-model="newPost.text" placeholder="Make your decree" required="required"></textarea>
+        </form>
+   
+       <div class="form-inline my-2 my-lg-0 ">
+          <button class="btn dib dim bg-black white btn-outline-success fr f2 my-2 my-sm-0" v-on:click.prevent="getPosts()">Search</button>
+        <input class="form-control f3 fr w-25 dib items-center pv3 ph2 mr-sm-2" type="text" placeholder="Search for a decree" v-model="search_term" aria-label="Search">
+      </div>
       <div class="fl w-100 w-75-ns pa2">
         <div class="outline bg-white pv4">
           <section class="mw7 center">
           {% comment %} Add a post through api {% endcomment %}
+          
+                      </article>
 
 
-            <div class="pv3 bt bb b--black-10 ph1 ph0-l">
-              <p> Add a tweet</p>
-            </article>
-            <div class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" v-on:click.prevent="getPosts()">Search</button>
-            </div>
-                <form method="POST" v-on:submit.prevent="addPost()">
-                  {% csrf_token %}
-                  <label for="post_text">Decree</label>
-                  <textarea type="text" v-model="newPost.text" placeholder="Make your decree" required="required"></textarea>
-                  <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
-                </form>
-            </div>
+
+  
+
+           
+ 
+
+       
+   
             {% comment %} Dynamically generated content {% endcomment %}
             <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
               <div class="flex flex-column flex-row-ns">
                 <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                   {% comment %} user avatar {% endcomment %}
                   <div class="tc">
-<<<<<<< HEAD
-
-                     <a :href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Avatar"></a>
-                     
-=======
                     {% if user.is_authenticated %}
-                      <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
+                     <a href="{% url 'profile' %}"> <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
                     {% else %}
                       <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
                     {% endif %}
->>>>>>> 7d80d43486006af3253d3116219b856a3a42f615
                     <div>
                       <a :post='post' :id="post.pk" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
                     </div>
