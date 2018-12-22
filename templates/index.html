@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-{% load app_tags %}
-
+{% load static %}
+{% if user.is_authenticated %}
+  {% load app_tags %}
+{% endif %}
 {% block title %}
 
    Home - {{ block.super }} 
@@ -15,11 +17,15 @@
         <div class="outline bg-white pv4">
         {% comment %} Profile card {% endcomment %}
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-              <div class="tc">
-                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Photo of a kitty staring at you">
-                <h1 class="f4">Mimi Whitehouse</h1>
-                <hr class="mw3 bb bw1 b--black-10">
-              </div>
+            <div class="tc">
+              {% if user.is_authenticated %}
+                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
+              {% else %}
+                <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+              {% endif %}
+              <h1 class="f4">Mimi Whitehouse</h1>
+              <hr class="mw3 bb bw1 b--black-10">
+            </div>
             <p class="lh-copy measure center f6 black-70">
               Quite affectionate and outgoing.
               She loves to get chin scratches and will
@@ -54,9 +60,17 @@
                 <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                   {% comment %} user avatar {% endcomment %}
                   <div class="tc">
+<<<<<<< HEAD
 
                      <a :href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Avatar"></a>
                      
+=======
+                    {% if user.is_authenticated %}
+                      <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
+                    {% else %}
+                      <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+                    {% endif %}
+>>>>>>> 7d80d43486006af3253d3116219b856a3a42f615
                     <div>
                       <a :post='post' :id="post.pk" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
                     </div>
@@ -76,7 +90,11 @@
                     <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                       {% comment %} small user avatar {% endcomment %}
                       <div class="tc">
-                        <img src="http://tachyons.io/img/logo.jpg" class="br3 h3 w3 dib" alt="avatar image">
+                        {% if user.is_authenticated %}
+                          <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
+                        {% else %}
+                          <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+                        {% endif %}
                       </div>
                     </div>
                     {% comment %} Responses generated here {% endcomment %}
