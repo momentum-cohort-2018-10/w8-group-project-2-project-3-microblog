@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load app_tags %}
-{% load staticfiles %}
 
 {% block title %}
 
@@ -56,7 +54,9 @@
                 <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                   {% comment %} user avatar {% endcomment %}
                   <div class="tc">
-                     <a :href="post.user.url"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Photo of a kitty staring at you"></a>
+
+                     <a :href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Avatar"></a>
+                     
                     <div>
                       <a :post='post' :id="post.pk" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
                     </div>

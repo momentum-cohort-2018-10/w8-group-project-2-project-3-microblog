@@ -2,7 +2,7 @@ var csrftoken = Cookies.get('csrftoken')
 Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
 const posts = new Vue({
-  el: '#vue-container',
+  el: '#profile-container',
   delimiters: ['${','}'],
   data: {
     users: [],
@@ -20,15 +20,15 @@ const posts = new Vue({
     // this.getUsers()
 
   },
-  methods: {
-    toggle: function(post) {
-      if (this.active.includes(post.pk)) {
-        this.active.splice(this.active.indexOf(post.pk), 1)
-      }
-      else {
-        this.active.push(post.pk)
-      }
-    },
+//   methods: {
+//     toggle: function(post) {
+//       if (this.active.includes(post.pk)) {
+//         this.active.splice(this.active.indexOf(post.pk), 1)
+//       }
+//       else {
+//         this.active.push(post.pk)
+//       }
+//     },
     activated: function(post) {
       return this.active.includes(post.pk)
     },
@@ -106,23 +106,3 @@ const posts = new Vue({
     }
   }
 });
-
-
-// const show = Vue.component('toggle-responses', {
-//   template: `
-//     <div>
-//       <a @click="toggle()" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
-//     </div>
-//   `,
-//   props: ['post'],
-//   methods: {
-//     toggle() {
-//       this.isActive = !this.isActive
-//     }
-//   },
-//   data() {
-//     return {
-//       isActive: false
-//     }
-//   }
-// })
