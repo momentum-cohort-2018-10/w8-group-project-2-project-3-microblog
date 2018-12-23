@@ -58,7 +58,6 @@ const vm = new Vue({
       })
     },
     addPost: function() {
-      
       this.$http.post('/api/posts/', this.newPost).then((response) => {
         this.getPosts()
       })
@@ -67,7 +66,6 @@ const vm = new Vue({
       })
     },
     deletePost: function(post) {
-      
       this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
         this.getPosts()
       })
@@ -76,7 +74,6 @@ const vm = new Vue({
       })
     },
     addResponse: function(post) {
-      
       this.$http.post('/api/responses/', this.newPost).then((response) => {
         this.getPosts()
       })
@@ -85,7 +82,6 @@ const vm = new Vue({
       })
     },
     deleteResponse: function(comment) {
-      
       this.$http.delete(`/api/responses/${comment.pk}/`).then((response) => {
         this.getPosts()
       })
