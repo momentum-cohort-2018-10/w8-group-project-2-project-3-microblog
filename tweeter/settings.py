@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'endless_pagination',
     'el_pagination',
     'allauth.socialaccount.providers.github',
-
+    'django_filters',
 
     # my apps
     'core',

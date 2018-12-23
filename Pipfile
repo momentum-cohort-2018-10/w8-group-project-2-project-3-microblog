@@ -26,6 +26,7 @@ django-el-pagination = "*"
 gunicorn = "*"
 django-endless-pagination-vue = "*"
 django-debug-toolbar = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.7"
