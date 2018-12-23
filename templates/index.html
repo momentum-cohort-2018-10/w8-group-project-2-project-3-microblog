@@ -83,7 +83,7 @@
                     {% endif %}
                     <div>
                       <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
-                      <a v-if="!loggedInUser.users_followed.includes(post.user.username)" @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                      <a v-if="loggedInUser === post.user.username" v-if="!loggedInUser.users_followed.includes(post.user.username)" @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
                       <a v-if="post.post_response[0]" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses</a>
                     </div>
                   </div>
