@@ -1,23 +1,22 @@
 var csrftoken = Cookies.get('csrftoken')
 Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
-const posts = new Vue({
+const vm = new Vue({
   el: '#vue-container',
   delimiters: ['${','}'],
   data: {
-    users: [],
     posts: [],
+    users: [],
     active: [],
-    loading: false,
     currentPost: {},
     message: null,
     newPost: { 'text': null },
     search_term: '',
-    
+    username_search: '',
+    showPostsNotUsers: true,
   },
   mounted: function() {
     this.getPosts()
-
   },
   methods: {
     toggle: function(post) {
@@ -32,74 +31,65 @@ const posts = new Vue({
       return this.active.includes(post.pk)
     },
     getPosts: function() {
-      let api_url = '/api/posts/';
-      if(this.search_term!==''||this.search_term!==null) {
-        api_url = `/api/posts/?search=${this.search_term}`
-      }
-      this.loading = true;
-      this.$http.get(api_url).then((response) => {
+      this.$http.get(`/api/posts/?search=${this.search_term}`).then((response) => {
         this.posts = response.data;
-        this.loading = false;
+        this.showPostsNotUsers = true;
       })
       .catch((err) => {
-        this.loading = false;
         console.log(err);
       })
     },
-    getPost: function(post) {
-      this.loading = true
-      this.$http.get(`/api/posts/${post.pk}/`).then((response) => {
-        this.currentPost = response.data
-        this.loading = false
-      })
-      .catch((err) => {
-        this.loading = false
-        console.log(err)
-      })
-    },
     getUsers: function() {
-      this.loading = true
-      this.$http.get('/api/users/').then((response) => {
-        this.users = response.data
-        this.loading = false
+      this.$http.get(`/api/users/?search=${this.username_search}`).then((response) => {
+        this.users = response.data;
+        this.showPostsNotUsers = false;
       })
       .catch((err) => {
-        this.loading = false
-        console.log(err)
+        console.log(err);
       })
     },
     getUser: function(post) {
-      this.loading = true
       this.$http.get(`/api/users/${user.pk}/`).then((response) => {
         this.currentUser = response.data
-        this.loading = false
+        this.showPostsNotUsers = false
       })
       .catch((err) => {
-        this.loading = false
         console.log(err)
       })
     },
     addPost: function() {
-      this.loading = true
+      
       this.$http.post('/api/posts/', this.newPost).then((response) => {
-        this.loading = false
-        console.log('hey im from inside addPost')
         this.getPosts()
       })
       .catch((err) => {
-        this.loading = false
         console.log(err)
-        console.log('there was a big fat error with addPost!')
       })
     },
     deletePost: function(post) {
-      this.loading = true
+      
       this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
-        this.loading = false
         this.getPosts()
       })
       .catch((err) => {
-        this.loading = false
+        console.log(err)
+      })
+    },
+    addResponse: function(post) {
+      
+      this.$http.post('/api/responses/', this.newPost).then((response) => {
+        this.getPosts()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    deleteResponse: function(comment) {
+      
+      this.$http.delete(`/api/responses/${comment.pk}/`).then((response) => {
+        this.getPosts()
+      })
+      .catch((err) => {
         console.log(err)
       })
     }

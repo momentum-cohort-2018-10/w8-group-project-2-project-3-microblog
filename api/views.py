@@ -16,8 +16,8 @@ class UserViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    
-
+    filter_backends = (filters.SearchFilter, )
+    search_fields = ('username', )
 
 
     # def get_queryset(self):
@@ -31,15 +31,15 @@ class PostViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('text',)
+    filter_backends = (filters.SearchFilter, )
+    search_fields = ('text', )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
     def check_object_permissions(self, request, post):
         if request.method != "GET" and post.user != request.user:
-            raise PermissionDenied("You are not the book's owner.")
+            raise PermissionDenied("You are not the owner!!")
         return super().check_object_permissions(request, post)
     
     # @csrf_exempt
