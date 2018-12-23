@@ -74,7 +74,7 @@
                   {% comment %} user avatar {% endcomment %}
                   <div class="tc">
                     {% if user.is_authenticated %}
-                      <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
+                     <a href="{% url 'profile' %}"> <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
                     {% else %}
                       <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
                     {% endif %}

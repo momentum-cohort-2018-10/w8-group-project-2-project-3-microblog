@@ -7,6 +7,7 @@ from api.serializers import UserSerializer, PostSerializer, ResponseSerializer, 
 from core.models import User, Post, Follow, Response
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
 
 # same as UserViewSet(viewsets.ModelViewSet): but without update functionality
 class UserViewSet(mixins.CreateModelMixin,
@@ -20,8 +21,18 @@ class UserViewSet(mixins.CreateModelMixin,
     search_fields = ('username', )
 
 
+    # def get_follower_count(self):
+    #     # queryset= User.objects.all()
+    #     queryset= self.request.user
+    #     queryset= queryset.annotate(num_of_followers=Count('followers'))
+
+    # def get_following_count(self):
+    #     queryset= self.request.user
+    #     queryset= queryset.annotate(num_of_followers=Count('following'))
+
     # def get_queryset(self):
-    #     queryset = self.request.user.posts
+    #     queryset = self.request.user
+    #     queryset= queryset.annotate(num_of_followers=Count('following'))
         
 
 class PostViewSet(mixins.CreateModelMixin,
@@ -34,6 +45,14 @@ class PostViewSet(mixins.CreateModelMixin,
     filter_backends = (filters.SearchFilter, )
     search_fields = ('text', )
 
+    # def get_queryset(self):
+    #     if self.kwargs.get('username'):
+    #         username = self.kwargs['username']
+    #         user = get_object_or_404(User, username=username)
+    #         return user.post.all()
+
+    #     return self.request.user.posts.all()
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -42,10 +61,6 @@ class PostViewSet(mixins.CreateModelMixin,
             raise PermissionDenied("You are not the owner!!")
         return super().check_object_permissions(request, post)
     
-    # @csrf_exempt
-    # def dispatch(self, *args, **kwargs):
-    #     return super(PostViewSet, self).dispatch(*args, **kwargs)
-        
     # def get_queryset(self):
     #     queryset = self.request.user.user_posts
 
