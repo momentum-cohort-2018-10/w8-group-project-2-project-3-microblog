@@ -12,11 +12,12 @@
 <div id="vue-container">
   <nav class="dt w-100 border-box pa3 ph5-ns">
     <div class="dtc v-mid w-75 tr">
-      <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="About">
-        <div class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Title contains" v-model="search_term">
+      {% comment %} search bars {% endcomment %}
+      <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="search">
+        <div class="form-inline my-2 my-lg-0"> 
+          <input class="form-control mr-sm-2" type="text" placeholder="Search posts.." v-model="search_term">
           <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getPosts()">Search Posts</button>
-          <input class="form-control mr-sm-2" type="text" placeholder="Username" v-model="username_search">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search users.." v-model="username_search">
           <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getUsers()">Search Users</button>
         </div>
       </a>
@@ -47,14 +48,16 @@
           </article>
         </div>
       </div>
+      {% comment %} show users when user search is run {% endcomment %}
       <div class="fl w-100 w-75-ns pa2" >
         <div v-show="!showPostsNotUsers" >
           <div v-if="users[0]"> 
             <article v-for="user in users" :key="user.pk">
-              <form method="POST" v-on:submit.prevent="toggleFollow(user)">
-                {% csrf_token %}
-                <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Follow ${user.username}</button>
-              </form>
+            <span>${user.username}</span>
+              <span v-if="loggedInUser.pk !== user.pk">
+                <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${user.username}</a>
+                <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${user.username}</a>
+              </span>
             </article>
           </div>
         </div>
@@ -64,7 +67,6 @@
           <div>
             <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
               <form method="POST" v-on:submit.prevent="addPost()">
-                {% csrf_token %}
                 <input type="text" v-model="newPost.text" maxlength="280" placeholder="Make your decree" required="required"/>
                 <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
               </form>
@@ -83,8 +85,8 @@
                     <div>
                       <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
                       <div v-if="loggedInUser.pk !== post.user.pk">
-                        <a v-if="isFollowed(post)" @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
-                        <a v-else @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                        <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
+                        <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
                       </div>
                       <a v-if="post.post_response[0]" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses</a>
                     </div>

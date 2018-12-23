@@ -11,8 +11,9 @@ const vm = new Vue({
     posts: [],
     users: [],
     active: [],
-    loggedInUser: {},
     followObject: [],
+    loggedInUser: {},
+    newResponse: { 'text': null, 'post': null },
     currentPost: {},
     message: null,
     newPost: { 'text': null },
@@ -80,7 +81,8 @@ const vm = new Vue({
       })
     },
     addResponse: function(post) {
-      this.$http.post('/api/responses/', this.newPost).then((response) => {
+      this.newResponse.post = post.pk
+      this.$http.post('/api/responses/', this.newResponse).then((response) => {
         this.getPosts();
       })
       .catch((err) => {
@@ -95,16 +97,16 @@ const vm = new Vue({
         console.log(err)
       })
     },
-    isFollowed: function(post) {
-      return this.loggedInUser.users_followed.includes(post.user.username)
+    isFollowed: function(user) {
+      return this.loggedInUser.users_followed.includes(user.username)
     },
-    toggleFollow: function(post) {
+    toggleFollow: function(user) {
       // check if the request user is already following the user
-      if (this.isFollowed(post)) {
+      if (this.isFollowed(user)) {
         // if yes, get the follow object from the api and store it in this.followObject
-        this.$http.get(`/api/follows/?followed_user=${post.user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {
+        this.$http.get(`/api/follows/?followed_user=${user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {
           this.followObject = response.data;
-          console.log(`You are no longer following ${post.user.username}`)
+          console.log(`You are no longer following ${user.username}`)
           // then, delete the object by referencing its pk
           this.$http.delete(`/api/follows/${this.followObject[0].pk}/`).then((response) => {
           // and run getLoggedInUser again to update the list of followed users
@@ -116,10 +118,10 @@ const vm = new Vue({
          })
       }
       else {
-        this.newFollow.followed_user = post.user.pk
+        this.newFollow.followed_user = user.pk
         this.$http.post('/api/follows/', this.newFollow).then((response) => {
           this.getLoggedInUser();
-          console.log(`You are now following ${post.user.username}!`)
+          console.log(`You are now following ${user.username}!`)
         })
         .catch((err) => {
           console.log(err)
