@@ -5,7 +5,8 @@ from core.models import User, Post, Follow, Response
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
-        fields = ('followed_user', 'following_user')
+        fields = ('followed_user', 'following_user', 'pk')
+        # fields = ('__all__')
 
 
 class UserSerializer(serializers.ModelSerializer):

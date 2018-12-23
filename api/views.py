@@ -6,6 +6,7 @@ from rest_framework.exceptions import PermissionDenied
 from api.serializers import UserSerializer, PostSerializer, ResponseSerializer, FollowSerializer
 from core.models import User, Post, Follow, Response
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
 
@@ -80,6 +81,8 @@ class FollowViewSet(mixins.CreateModelMixin,
                   viewsets.GenericViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
+    filter_backends = (DjangoFilterBackend, )
+    filter_fields = ('followed_user', 'following_user' )
 
     # def perform_create(self, serializer):
     #     serializer.save(following_user=self.request.user)

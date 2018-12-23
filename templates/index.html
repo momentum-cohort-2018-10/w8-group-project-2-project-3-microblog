@@ -3,10 +3,9 @@
 {% if user.is_authenticated %}
   {% load app_tags %}
 {% endif %}
+
 {% block title %}
-
    Home - {{ block.super }} 
-
 {% endblock title %}
 
 {% block content %}
@@ -83,7 +82,10 @@
                     {% endif %}
                     <div>
                       <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
-                      <a v-if="loggedInUser === post.user.username" v-if="!loggedInUser.users_followed.includes(post.user.username)" @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                      <div v-if="loggedInUser.pk !== post.user.pk">
+                        <a v-if="isFollowed(post)" @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
+                        <a v-else @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                      </div>
                       <a v-if="post.post_response[0]" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses</a>
                     </div>
                   </div>
@@ -116,7 +118,6 @@
                     </div>
                   </div>
                 </div>
-
               </article>
             </div>
           </section>

@@ -27,7 +27,7 @@ class Follow(models.Model):
         to="User", on_delete=models.CASCADE, related_name="follows_from")
     followed_user = models.ForeignKey(
         to="User", on_delete=models.CASCADE, related_name="follows_to")
-
+    
     class Meta:
         unique_together = ("following_user", "followed_user")
 
@@ -35,7 +35,6 @@ class Follow(models.Model):
     #     if self.followed_user == self.following_user:
     #         raise 
     #     super().save(*args, **kwargs)
-
 
 class Response(models.Model):
     user = models.ForeignKey(to="User", on_delete=models.CASCADE, null=True)

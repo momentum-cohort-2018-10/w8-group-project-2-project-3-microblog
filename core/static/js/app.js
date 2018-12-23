@@ -12,6 +12,7 @@ const vm = new Vue({
     users: [],
     active: [],
     loggedInUser: {},
+    followObject: [],
     currentPost: {},
     message: null,
     newPost: { 'text': null },
@@ -94,9 +95,25 @@ const vm = new Vue({
         console.log(err)
       })
     },
+    isFollowed: function(post) {
+      return this.loggedInUser.users_followed.includes(post.user.username)
+    },
     toggleFollow: function(post) {
-      if (this.loggedInUser.users_followed.includes(post.user.username)) {
-        console.log(`You are already following ${post.user.username}!`)
+      // check if the request user is already following the user
+      if (this.isFollowed(post)) {
+        // if yes, get the follow object from the api and store it in this.followObject
+        this.$http.get(`/api/follows/?followed_user=${post.user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {
+          this.followObject = response.data;
+          console.log(`You are no longer following ${post.user.username}`)
+          // then, delete the object by referencing its pk
+          this.$http.delete(`/api/follows/${this.followObject[0].pk}/`).then((response) => {
+          // and run getLoggedInUser again to update the list of followed users
+            this.getLoggedInUser();
+          })
+         })
+         .catch((err) => {
+           console.log(err)
+         })
       }
       else {
         this.newFollow.followed_user = post.user.pk
@@ -108,7 +125,7 @@ const vm = new Vue({
           console.log(err)
         })
       }
-    }
+    },
   }
 });
 
