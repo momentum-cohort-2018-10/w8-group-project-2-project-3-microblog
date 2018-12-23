@@ -51,8 +51,11 @@
       <div class="fl w-100 w-75-ns pa2" >
         <div v-show="!showPostsNotUsers" >
           <div v-if="users[0]"> 
-            <article v-for="q in users" :key="q.pk">
-              <p>${q.username}</p>
+            <article v-for="user in users" :key="user.pk">
+              <form method="POST" v-on:submit.prevent="toggleFollow(user)">
+                {% csrf_token %}
+                <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Follow ${user.username}</button>
+              </form>
             </article>
           </div>
         </div>
@@ -79,8 +82,9 @@
                       <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
                     {% endif %}
                     <div>
+                      <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                      <a v-if="!loggedInUser.users_followed.includes(post.user.username)" @click.prevent="toggleFollow(post)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
                       <a v-if="post.post_response[0]" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses</a>
-                      <a @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
                     </div>
                   </div>
                 </div>

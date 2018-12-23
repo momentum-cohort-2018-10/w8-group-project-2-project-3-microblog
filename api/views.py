@@ -81,7 +81,13 @@ class FollowViewSet(mixins.CreateModelMixin,
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
 
+    # def perform_create(self, serializer):
+    #     serializer.save(following_user=self.request.user)
 
+    # def check_object_permissions(self, request, post):
+    #     if self.following_user == self.followed_user:
+    #         raise PermissionDenied("You can't follow yourself!")
+    #     return super().check_object_permissions(request, post)
 # class ProfileViewSet(viewsets.ModelViewSet):
 #     serializer_class = PostSerializer
     

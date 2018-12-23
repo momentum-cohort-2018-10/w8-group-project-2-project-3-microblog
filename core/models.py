@@ -31,6 +31,11 @@ class Follow(models.Model):
     class Meta:
         unique_together = ("following_user", "followed_user")
 
+    # def save(self, *args, **kwargs):
+    #     if self.followed_user == self.following_user:
+    #         raise 
+    #     super().save(*args, **kwargs)
+
 
 class Response(models.Model):
     user = models.ForeignKey(to="User", on_delete=models.CASCADE, null=True)
