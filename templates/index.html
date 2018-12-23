@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load staticfiles %}
 {% if user.is_authenticated %}
   {% load app_tags %}
 {% endif %}
@@ -11,16 +11,26 @@
 
 {% block content %}
 <div id="vue-container">
-
+  <nav class="dt w-100 border-box pa3 ph5-ns">
+    <div class="dtc v-mid w-75 tr">
+      <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="About">
+        <div class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Title contains" v-model="search_term">
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getPosts()">Search Posts</button>
+          <input class="form-control mr-sm-2" type="text" placeholder="Username" v-model="username_search">
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getUsers()">Search Users</button>
+        </div>
+      </a>
+      <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Temp</a>
+      <a class="link dark-gray f6 f5-ns dib" href="#" title="Contact">Temp</a>
+    </div>
+  </nav>
   <div class="mw9 center ph3-ns">
-
     <div class="cf ph2-ns">
       <div class="fl w-25 pa2">
         <div class="outline bg-white pv4">
         {% comment %} Profile card {% endcomment %}
-
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-           
             <div class="tc">
               {% if user.is_authenticated %}
                 <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
@@ -32,41 +42,31 @@
             </div>
             <p class="lh-copy measure center f6 black-70">
               Quite affectionate and outgoing.
-              She loves to get chin scratches and will
+              She loves <em>scritches</em> and will
               roll around on the floor waiting for you give her more of them.
             </p>
           </article>
         </div>
       </div>
-       <div class="pv3 bt bb b--black-10 ph1 ph0-l ">
+      <div class="fl w-100 w-75-ns pa2" >
+        <div v-show="!showPostsNotUsers" >
+          <div v-if="users[0]"> 
+            <article v-for="q in users" :key="q.pk">
+              <p>${q.username}</p>
+            </article>
+          </div>
         </div>
-        <form method="POST" v-on:submit.prevent="addPost()">
-                  {% csrf_token %}
-          <button type="submit" class="btn dim fl bg-black white btn-outline-success f2 ">Submit</button>
-         <label for="post_text"></label>
-          <textarea class="fl w-30 dib f3 justify-center items-center pv1 ph2 mr-sm-2" type="text" v-model="newPost.text" placeholder="Make your decree" required="required"></textarea>
-        </form>
-   
-       <div class="form-inline my-2 my-lg-0 ">
-          <button class="btn dib dim bg-black white btn-outline-success fr f2 my-2 my-sm-0" v-on:click.prevent="getPosts()">Search</button>
-        <input class="form-control f3 fr w-25 dib items-center pv3 ph2 mr-sm-2" type="text" placeholder="Search for a decree" v-model="search_term" aria-label="Search">
-      </div>
-      <div class="fl w-100 w-75-ns pa2">
-        <div class="outline bg-white pv4">
+        <div v-show="showPostsNotUsers" class="outline bg-white pv4">
           <section class="mw7 center">
           {% comment %} Add a post through api {% endcomment %}
-          
-                      </article>
-
-
-
-  
-
-           
- 
-
-       
-   
+          <div>
+            <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+              <form method="POST" v-on:submit.prevent="addPost()">
+                {% csrf_token %}
+                <input type="text" v-model="newPost.text" maxlength="280" placeholder="Make your decree" required="required"/>
+                <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+              </form>
+            </div>
             {% comment %} Dynamically generated content {% endcomment %}
             <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
               <div class="flex flex-column flex-row-ns">
@@ -79,7 +79,8 @@
                       <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
                     {% endif %}
                     <div>
-                      <a :post='post' :id="post.pk" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
+                      <a v-if="post.post_response[0]" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses</a>
+                      <a @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
                     </div>
                   </div>
                 </div>
@@ -92,7 +93,7 @@
               </div>
               {% comment %} Responses container {% endcomment %}
               <div v-if="activated(post)">
-                <div v-for="response in post.post_response"class="mt1 ml4">
+                <div v-for="response in post.post_response" class="mt1 ml4">
                   <div class="flex flex-column flex-row-ns">
                     <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                       {% comment %} small user avatar {% endcomment %}
@@ -111,8 +112,9 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </article>
+
+              </article>
+            </div>
           </section>
         </div>
       </div>

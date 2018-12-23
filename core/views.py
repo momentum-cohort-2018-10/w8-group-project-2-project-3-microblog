@@ -9,23 +9,3 @@ def index(request):
 
 def profile(request):
     return render(request, 'profilepage.html')
-
-
-# # @login_required
-# def profile(request):
-#     posts = Post.objects.get(pk=pk)
-#     user_posts = []
-#     if request.user.is_authenticated:
-#         user_posts = request.user.user_posts.all()
-#     return render(request, 'profilepage.html', {
-#         'posts': posts,
-#         'user_posts': user_posts,
-
-    # })
-
-
-# def gravatar(request):
-#     url = get_gravatar_url('alice@example.com', size=150)
-#     gravatar_exists = has_gravatar('bob@example.com')
-#     profile_url = get_gravatar_profile_url('alice@example.com')
-#     email_hash = calculate_gravatar_hash('alice@example.com')
