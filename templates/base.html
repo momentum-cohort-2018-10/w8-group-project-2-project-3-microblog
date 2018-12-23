@@ -45,6 +45,9 @@
     </nav>
   </header>
 
+<input type="hidden" id="request-user-pk" value="{{ request.user.pk }}">
+<input type="hidden" id="request-user" value="{{ request.user }}">
+
   {% block content %}
   {% endblock content %}
 

@@ -1,6 +1,9 @@
 var csrftoken = Cookies.get('csrftoken')
 Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
+const requestUserPk = parseInt(document.getElementById('request-user-pk').value)
+const requestUser = document.getElementById('request-user').value
+
 const vm = new Vue({
   el: '#vue-container',
   delimiters: ['${','}'],
@@ -8,15 +11,18 @@ const vm = new Vue({
     posts: [],
     users: [],
     active: [],
+    loggedInUser: {},
     currentPost: {},
     message: null,
     newPost: { 'text': null },
+    newFollow: {'following_user': requestUserPk, 'followed_user': null},
     search_term: '',
     username_search: '',
     showPostsNotUsers: true,
   },
   mounted: function() {
-    this.getPosts()
+    this.getPosts();
+    this.getLoggedInUser();
   },
   methods: {
     toggle: function(post) {
@@ -48,10 +54,9 @@ const vm = new Vue({
         console.log(err);
       })
     },
-    getUser: function(post) {
-      this.$http.get(`/api/users/${user.pk}/`).then((response) => {
-        this.currentUser = response.data
-        this.showPostsNotUsers = false
+    getLoggedInUser: function() {
+      this.$http.get(`/api/users/${requestUserPk}/`).then((response) => {
+        this.loggedInUser = response.data
       })
       .catch((err) => {
         console.log(err)
@@ -59,7 +64,7 @@ const vm = new Vue({
     },
     addPost: function() {
       this.$http.post('/api/posts/', this.newPost).then((response) => {
-        this.getPosts()
+        this.getPosts();
       })
       .catch((err) => {
         console.log(err)
@@ -67,7 +72,7 @@ const vm = new Vue({
     },
     deletePost: function(post) {
       this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
-        this.getPosts()
+        this.getPosts();
       })
       .catch((err) => {
         console.log(err)
@@ -75,7 +80,7 @@ const vm = new Vue({
     },
     addResponse: function(post) {
       this.$http.post('/api/responses/', this.newPost).then((response) => {
-        this.getPosts()
+        this.getPosts();
       })
       .catch((err) => {
         console.log(err)
@@ -83,11 +88,26 @@ const vm = new Vue({
     },
     deleteResponse: function(comment) {
       this.$http.delete(`/api/responses/${comment.pk}/`).then((response) => {
-        this.getPosts()
+        this.getPosts();
       })
       .catch((err) => {
         console.log(err)
       })
+    },
+    toggleFollow: function(post) {
+      if (this.loggedInUser.users_followed.includes(post.user.username)) {
+        console.log(`You are already following ${post.user.username}!`)
+      }
+      else {
+        this.newFollow.followed_user = post.user.pk
+        this.$http.post('/api/follows/', this.newFollow).then((response) => {
+          this.getLoggedInUser();
+          console.log(`You are now following ${post.user.username}!`)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
     }
   }
 });
