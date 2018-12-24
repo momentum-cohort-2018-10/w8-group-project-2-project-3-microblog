@@ -1,7 +1,7 @@
 var csrftoken = Cookies.get('csrftoken')
 Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
-const requestUserPk = parseInt(document.getElementById('request-user-pk').value)
+const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
 const requestUser = document.getElementById('request-user').value
 
 const vm = new Vue({
@@ -13,7 +13,7 @@ const vm = new Vue({
     active: [],
     followObject: [],
     loggedInUser: {},
-    newResponse: { 'text': null, 'post': null },
+    newResponse: { 'text': null, 'post': null, 'user': requestUser },
     currentPost: {},
     message: null,
     newPost: { 'text': null },
@@ -24,7 +24,9 @@ const vm = new Vue({
   },
   mounted: function() {
     this.getPosts();
-    this.getLoggedInUser();
+    if (requestUserPk !== -1) {
+      this.getLoggedInUser();
+    }
   },
   methods: {
     toggle: function(post) {
@@ -87,10 +89,11 @@ const vm = new Vue({
       })
       .catch((err) => {
         console.log(err)
+        console.log(this.newResponse)
       })
     },
-    deleteResponse: function(comment) {
-      this.$http.delete(`/api/responses/${comment.pk}/`).then((response) => {
+    deleteResponse: function(response_to_post) {
+      this.$http.delete(`/api/responses/${response_to_post.pk}/`).then((response) => {
         this.getPosts();
       })
       .catch((err) => {

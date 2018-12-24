@@ -21,7 +21,6 @@ class UserViewSet(mixins.CreateModelMixin,
     filter_backends = (filters.SearchFilter, )
     search_fields = ('username', )
 
-
     # def get_follower_count(self):
     #     # queryset= User.objects.all()
     #     queryset= self.request.user
@@ -62,8 +61,6 @@ class PostViewSet(mixins.CreateModelMixin,
             raise PermissionDenied("You are not the owner!!")
         return super().check_object_permissions(request, post)
     
-    # def get_queryset(self):
-    #     queryset = self.request.user.user_posts
 
 class ResponseViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -73,6 +70,13 @@ class ResponseViewSet(mixins.CreateModelMixin,
     queryset = Response.objects.all()
     serializer_class = ResponseSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    # def check_object_permissions(self, request, response):
+    #     if request.method != "GET" and response.user != request.user:
+    #         raise PermissionDenied("You are not the owner!!")
+    #     return super().check_object_permissions(request, response)
 
 class FollowViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
@@ -82,17 +86,7 @@ class FollowViewSet(mixins.CreateModelMixin,
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     filter_backends = (DjangoFilterBackend, )
-    filter_fields = ('followed_user', 'following_user' )
+    filter_fields = ('followed_user', 'following_user', )
 
-    # def perform_create(self, serializer):
-    #     serializer.save(following_user=self.request.user)
-
-    # def check_object_permissions(self, request, post):
-    #     if self.following_user == self.followed_user:
-    #         raise PermissionDenied("You can't follow yourself!")
-    #     return super().check_object_permissions(request, post)
-# class ProfileViewSet(viewsets.ModelViewSet):
-#     serializer_class = PostSerializer
-    
-#     def get_queryset(self):
-#         queryset = self.request.user.user_posts
+    def perform_create(self, serializer):
+        serializer.save(following_user=self.request.user)

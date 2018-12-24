@@ -19,8 +19,8 @@ class Post(models.Model):
     def __str__(self):
         return self.text
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
 
 class Follow(models.Model):
     following_user = models.ForeignKey(

@@ -25,7 +25,7 @@ class ResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Response
-        fields = ('user', 'text', 'url', 'created_at', 'pk')
+        fields = ('user', 'text', 'url', 'post', 'created_at', 'pk')
 
 
 class PostSerializer(serializers.ModelSerializer):
