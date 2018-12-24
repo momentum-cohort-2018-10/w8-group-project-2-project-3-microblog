@@ -45,8 +45,12 @@
     </nav>
   </header>
 
-<input type="hidden" id="request-user-pk" value="{{ request.user.pk }}">
-<input type="hidden" id="request-user" value="{{ request.user }}">
+{% if user.is_authenticated %}
+  <input type="hidden" id="request-user-pk" value="{{ request.user.pk }}">
+{% else %}
+  <input type="hidden" id="request-user-pk" value="-1">
+{% endif %}
+  <input type="hidden" id="request-user" value="{{ request.user }}">
 
   {% block content %}
   {% endblock content %}

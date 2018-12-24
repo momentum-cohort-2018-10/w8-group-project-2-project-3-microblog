@@ -12,7 +12,7 @@ const vm = new Vue({
     users: [],
     active: [],
     followObject: [],
-    loggedInUser: {},
+    loggedInUser: {'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': []},
     newResponse: { 'text': null, 'post': null, 'user': requestUser },
     currentPost: {},
     message: null,
@@ -29,7 +29,7 @@ const vm = new Vue({
     }
   },
   methods: {
-    toggle: function(post) {
+    toggleResponses: function(post) {
       if (this.active.includes(post.pk)) {
         this.active.splice(this.active.indexOf(post.pk), 1)
       }
@@ -37,7 +37,7 @@ const vm = new Vue({
         this.active.push(post.pk)
       }
     },
-    activated: function(post) {
+    showResponses: function(post) {
       return this.active.includes(post.pk)
     },
     getPosts: function() {

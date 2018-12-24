@@ -33,9 +33,9 @@
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
             <div class="tc">
               {% if user.is_authenticated %}
-                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
+                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
               {% else %}
-                <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+                <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
               {% endif %}
               <h1 class="f4">Mimi Whitehouse</h1>
               <hr class="mw3 bb bw1 b--black-10">
@@ -53,19 +53,20 @@
         <div v-show="!showPostsNotUsers" >
           <div v-if="users[0]"> 
             <article v-for="user in users" :key="user.pk">
-            <span>${user.username}</span>
-            {% if user.is_authenticated %}
-              <span v-if="loggedInUser.pk !== user.pk">
-                <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${user.username}</a>
-                <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${user.username}</a>
-              </span>
-            {% endif %}
+              <span>${user.username}</span>
+              {% comment %} show follow button if user is logged in {% endcomment %}
+              {% if user.is_authenticated %}
+                <span v-if="loggedInUser.pk !== user.pk">
+                  <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${user.username}</a>
+                  <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${user.username}</a>
+                </span>
+              {% endif %}
             </article>
           </div>
         </div>
         <div v-show="showPostsNotUsers" class="outline bg-white pv4">
           <section class="mw7 center">
-          {% comment %} Add a post through api {% endcomment %}
+          {% comment %} Add a post{% endcomment %}
           <div>
           {% if user.is_authenticated %}
             <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
@@ -77,65 +78,67 @@
           {% endif %}
             {% comment %} Dynamically generated content {% endcomment %}
             <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
-              <div class="flex flex-column flex-row-ns">
-                <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
-                  {% comment %} user avatar {% endcomment %}
-                  <div class="tc">
-                    {% if user.is_authenticated %}
-                     <a href="{% url 'profile' %}"> <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
-                    {% else %}
-                      <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
-                    {% endif %}
-                    <div>
-                    {% if user.is_authenticated %}
-                      <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
-                      <div v-if="loggedInUser.pk !== post.user.pk">
-                        <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
-                        <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
-                    {% endif %}
-                      </div>
-                      <a v-if="post.post_response[0]" @click="toggle(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
-                    </div>
-                  </div>
-                </div>
-                {% comment %} Decrees generated here {% endcomment %}
-                <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                  <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
-                  <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${post.user.username}</a></span></p>
-                  <time class="f6 ml2 db gray">${post.created_at}</time>
-                </div>
-              </div>
-              {% comment %} Responses container {% endcomment %}
-              <div v-if="activated(post)">
-                <div v-for="response in post.post_response" class="mt1 ml4">
-                  <div class="flex flex-column flex-row-ns">
-                    <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
-                      {% comment %} small user avatar {% endcomment %}
-                      <div class="tc">
-                        {% if user.is_authenticated %}
-                          <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar">
-                        {% else %}
-                          <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
-                        {% endif %}
-                          <a v-if="loggedInUser.username === response.user" @click.prevent="deleteResponse(response)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
-                      </div>
-                    </div>
-                    {% comment %} Responses generated here {% endcomment %}
-                    <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                      <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
-                      <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div>
-              {% comment %} add response form {% endcomment %}
-                <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
-                  <form method="POST" v-on:submit.prevent="addResponse(post)">
-                    <input type="text" v-model="newResponse.text" maxlength="280" placeholder="Add a response.." required="required"/>
-                    <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
-                  </form>
+                <div class="flex flex-column flex-row-ns">
+                  <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                    {% comment %} user avatar and buttons {% endcomment %}
+                    <div class="tc">
+                      {% if user.is_authenticated %}
+                      <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
+                      {% else %}
+                      <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+                      {% endif %}
+                      <div>
+                      {% if user.is_authenticated %}
+                        <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                        <div v-if="loggedInUser.pk !== post.user.pk">
+                          <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
+                          <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                        </div>
+                      {% endif %}
+                        <a v-if="post.post_response[0]" @click="toggleResponses(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
+                      </div>
+                    </div>
+                  </div>
+                  {% comment %} Decrees generated here {% endcomment %}
+                  <div class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                    <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
+                    <span class="f6 ml2 lh-copy gray mv0 ttu">By <a href="#">${post.user.username}</a> | Followers: ${post.user.followers.length}</span>
+                    <time class="f6 ml2 db gray">${post.created_at}</time>
+                  </div>
                 </div>
+                {% comment %} Responses container {% endcomment %}
+                <div v-if="showResponses(post)">
+                  <div v-for="response in post.post_response" class="mt1 ml4">
+                    <div class="flex flex-column flex-row-ns">
+                      <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                        {% comment %} small user avatar {% endcomment %}
+                        <div class="tc">
+                          {% if user.is_authenticated %}
+                            <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
+                          {% else %}
+                            <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
+                          {% endif %}
+                            <a v-if="loggedInUser.username === response.user" @click.prevent="deleteResponse(response)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                        </div>
+                      </div>
+                      {% comment %} Responses generated here {% endcomment %}
+                      <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                        <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
+                        <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% comment %} add response form {% endcomment %}
+                {% if user.is_authenticated %}
+                  <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+                    <form method="POST" v-on:submit.prevent="addResponse(post)">
+                      <input type="text" v-model="newResponse.text" maxlength="280" placeholder="Add a response.." required="required"/>
+                      <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                    </form>
+                  </div>
+                {% endif %}
               </div>
             </article>
           </section>
