@@ -82,7 +82,7 @@
             {% comment %} Dynamically generated content {% endcomment %}
             <article v-for="post in posts" :key="post.pk">
               <div v-if="showFeedNotAll">
-                <div v-if="isFollowed(post.user)" class="pv3 bt bb b--black-10 ph1 ph0-l">
+                <div v-if="isFollowed(post.user)"class="pv3 bt bb b--black-10 ph1 ph0-l">
                   <div class="flex flex-column flex-row-ns">
                     <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                       {% comment %} user avatar and buttons {% endcomment %}
@@ -105,7 +105,7 @@
                       </div>
                     </div>
                     {% comment %} Decrees generated here {% endcomment %}
-                    <div class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                    <div ref="numItems" class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
                       <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
                       <span class="f6 ml2 lh-copy gray mv0 ttu">By <a href="#">${post.user.username}</a> | Followers: ${post.user.followers.length}</span>
                       <time class="f6 ml2 db gray">${post.created_at}</time>
@@ -169,7 +169,7 @@
                     </div>
                   </div>
                   {% comment %} Decrees generated here {% endcomment %}
-                  <div class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                  <div ref="numItems" class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
                     <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
                     <span class="f6 ml2 lh-copy gray mv0 ttu">By <a href="#">${post.user.username}</a> | Followers: ${post.user.followers.length}</span>
                     <time class="f6 ml2 db gray">${post.created_at}</time>
@@ -209,6 +209,7 @@
                 {% endif %}
               </div>
             </article>
+            <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h1>
           </section>
         </div>
       </div>

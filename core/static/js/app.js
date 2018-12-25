@@ -6,31 +6,36 @@ const requestUser = document.getElementById('request-user').value
 
 const vm = new Vue({
   el: '#vue-container',
-  delimiters: ['${','}'],
+  delimiters: ['${', '}'],
   data: {
     posts: [],
     users: [],
     active: [],
+    displayedItems: 0,
     followObject: [],
-    loggedInUser: {'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': []},
+    loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': [] },
     newResponse: { 'text': null, 'post': null, 'user': requestUser },
     currentPost: {},
     message: null,
     newPost: { 'text': null },
-    newFollow: {'following_user': requestUserPk, 'followed_user': null},
+    newFollow: { 'following_user': requestUserPk, 'followed_user': null },
     search_term: '',
     username_search: '',
     showPostsNotUsers: true,
     showFeedNotAll: true,
   },
-  mounted: function() {
+  mounted: function () {
     this.getPosts();
     if (requestUserPk !== -1) {
       this.getLoggedInUser();
     }
+    console.log(this)
+  },
+  updated: function () {
+    this.displayedItems = this.$refs.numItems.length
   },
   methods: {
-    toggleResponses: function(post) {
+    toggleResponses: function (post) {
       if (this.active.includes(post.pk)) {
         this.active.splice(this.active.indexOf(post.pk), 1)
       }
@@ -38,77 +43,77 @@ const vm = new Vue({
         this.active.push(post.pk)
       }
     },
-    showResponses: function(post) {
+    showResponses: function (post) {
       return this.active.includes(post.pk)
     },
-    getPosts: function() {
+    getPosts: function () {
       this.$http.get(`/api/posts/?search=${this.search_term}`).then((response) => {
         this.posts = response.data;
         this.search_term = ''
         this.showPostsNotUsers = true;
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        })
     },
-    getUsers: function() {
+    getUsers: function () {
       this.$http.get(`/api/users/?search=${this.username_search}`).then((response) => {
         this.users = response.data;
         this.username_search = ''
         this.showPostsNotUsers = false;
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        })
     },
-    getLoggedInUser: function() {
+    getLoggedInUser: function () {
       this.$http.get(`/api/users/${requestUserPk}/`).then((response) => {
         this.loggedInUser = response.data
       })
-      .catch((err) => {
-        console.log(err)
-      })
+        .catch((err) => {
+          console.log(err)
+        })
     },
-    addPost: function() {
+    addPost: function () {
       this.$http.post('/api/posts/', this.newPost).then((response) => {
         this.getPosts();
         this.newPost.text = ''
       })
-      .catch((err) => {
-        console.log(err)
-      })
+        .catch((err) => {
+          console.log(err)
+        })
     },
-    deletePost: function(post) {
+    deletePost: function (post) {
       this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
         this.getPosts();
       })
-      .catch((err) => {
-        console.log(err)
-      })
+        .catch((err) => {
+          console.log(err)
+        })
     },
-    addResponse: function(post) {
+    addResponse: function (post) {
       this.newResponse.post = post.pk
       this.$http.post('/api/responses/', this.newResponse).then((response) => {
         this.getPosts();
         this.newResponse.text = ''
       })
-      .catch((err) => {
-        console.log(err)
-        console.log(this.newResponse)
-      })
+        .catch((err) => {
+          console.log(err)
+          console.log(this.newResponse)
+        })
     },
-    deleteResponse: function(response_to_post) {
+    deleteResponse: function (response_to_post) {
       this.$http.delete(`/api/responses/${response_to_post.pk}/`).then((response) => {
         this.getPosts();
       })
-      .catch((err) => {
-        console.log(err)
-      })
+        .catch((err) => {
+          console.log(err)
+        })
     },
-    isFollowed: function(user) {
+    isFollowed: function (user) {
       return this.loggedInUser.users_followed.includes(user.username)
     },
-    toggleFollow: function(user) {
+    toggleFollow: function (user) {
       // check if the request user is already following the user
       if (this.isFollowed(user)) {
         // if yes, get the follow object from the api and store it in this.followObject
@@ -117,19 +122,19 @@ const vm = new Vue({
           console.log(`You are no longer following ${user.username}`)
           // then, delete the object by referencing its pk
           this.$http.delete(`/api/follows/${this.followObject[0].pk}/`).then((response) => {
-          // and run getLoggedInUser and getPosts again to update the list of followed users
+            // and run getLoggedInUser and getPosts again to update the list of followed users
             this.getLoggedInUser();
             if (this.showPostsNotUsers) {
               this.getPosts();
-              }
+            }
             else {
               this.getUsers();
             }
           })
-         })
-         .catch((err) => {
-           console.log(err)
-         })
+        })
+          .catch((err) => {
+            console.log(err)
+          })
       }
       else {
         this.newFollow.followed_user = user.pk
@@ -137,15 +142,15 @@ const vm = new Vue({
           this.getLoggedInUser();
           if (this.showPostsNotUsers) {
             this.getPosts();
-            }
+          }
           else {
             this.getUsers();
           }
           console.log(`You are now following ${user.username}!`)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+          .catch((err) => {
+            console.log(err)
+          })
       }
     },
   }
