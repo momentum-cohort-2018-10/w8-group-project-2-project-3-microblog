@@ -21,7 +21,9 @@
           <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getUsers()">Search Users</button>
         </div>
       </a>
-      <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Store">Temp</a>
+      {% if user.is_authenticated %}
+        <a @click="getFeed()" class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Feed">Feed</a>
+      {% endif %}
       <a class="link dark-gray f6 f5-ns dib" href="#" title="Contact">Temp</a>
     </div>
   </nav>

@@ -37,6 +37,7 @@
         <a class="f6 f5-l link bg-animate black-80 hover-bg-light-green dib pa3 ph4-l" href="{% url 'about' %}">About</a>
         <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'core:post-list' %}">API</a>
       {% if user.is_authenticated %}
+        <a class="f6 f5-l link bg-animate black-80 hover-bg-yellow dib pa3 ph4-l" href="{% url 'profile' %}">{{ request.user|capfirst }}</a>
         <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'auth_logout' %}">Logout</a>
       {% else %}
         <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'auth_login' %}">Login</a>

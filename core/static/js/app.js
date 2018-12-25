@@ -43,6 +43,7 @@ const vm = new Vue({
     getPosts: function() {
       this.$http.get(`/api/posts/?search=${this.search_term}`).then((response) => {
         this.posts = response.data;
+        this.search_term = ''
         this.showPostsNotUsers = true;
       })
       .catch((err) => {
@@ -52,6 +53,7 @@ const vm = new Vue({
     getUsers: function() {
       this.$http.get(`/api/users/?search=${this.username_search}`).then((response) => {
         this.users = response.data;
+        this.username_search = ''
         this.showPostsNotUsers = false;
       })
       .catch((err) => {
@@ -69,6 +71,7 @@ const vm = new Vue({
     addPost: function() {
       this.$http.post('/api/posts/', this.newPost).then((response) => {
         this.getPosts();
+        this.newPost.text = ''
       })
       .catch((err) => {
         console.log(err)
@@ -86,6 +89,7 @@ const vm = new Vue({
       this.newResponse.post = post.pk
       this.$http.post('/api/responses/', this.newResponse).then((response) => {
         this.getPosts();
+        this.newResponse.text = ''
       })
       .catch((err) => {
         console.log(err)
@@ -112,8 +116,9 @@ const vm = new Vue({
           console.log(`You are no longer following ${user.username}`)
           // then, delete the object by referencing its pk
           this.$http.delete(`/api/follows/${this.followObject[0].pk}/`).then((response) => {
-          // and run getLoggedInUser again to update the list of followed users
+          // and run getLoggedInUser and getPosts again to update the list of followed users
             this.getLoggedInUser();
+            this.getPosts();
           })
          })
          .catch((err) => {
@@ -124,6 +129,7 @@ const vm = new Vue({
         this.newFollow.followed_user = user.pk
         this.$http.post('/api/follows/', this.newFollow).then((response) => {
           this.getLoggedInUser();
+          this.getPosts();
           console.log(`You are now following ${user.username}!`)
         })
         .catch((err) => {
