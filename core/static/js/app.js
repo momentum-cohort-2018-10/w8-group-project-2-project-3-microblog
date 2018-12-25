@@ -21,6 +21,7 @@ const vm = new Vue({
     search_term: '',
     username_search: '',
     showPostsNotUsers: true,
+    showFeedNotAll: true,
   },
   mounted: function() {
     this.getPosts();
@@ -118,7 +119,12 @@ const vm = new Vue({
           this.$http.delete(`/api/follows/${this.followObject[0].pk}/`).then((response) => {
           // and run getLoggedInUser and getPosts again to update the list of followed users
             this.getLoggedInUser();
-            this.getPosts();
+            if (this.showPostsNotUsers) {
+              this.getPosts();
+              }
+            else {
+              this.getUsers();
+            }
           })
          })
          .catch((err) => {
@@ -129,7 +135,12 @@ const vm = new Vue({
         this.newFollow.followed_user = user.pk
         this.$http.post('/api/follows/', this.newFollow).then((response) => {
           this.getLoggedInUser();
-          this.getPosts();
+          if (this.showPostsNotUsers) {
+            this.getPosts();
+            }
+          else {
+            this.getUsers();
+          }
           console.log(`You are now following ${user.username}!`)
         })
         .catch((err) => {

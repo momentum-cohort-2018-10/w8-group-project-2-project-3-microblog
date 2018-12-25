@@ -16,13 +16,13 @@
       <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="search">
         <div class="form-inline my-2 my-lg-0"> 
           <input class="form-control mr-sm-2" type="text" placeholder="Search posts.." v-model="search_term">
-          <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getPosts()">Search Posts</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getPosts(), showFeedNotAll=false">Search Posts</button>
           <input class="form-control mr-sm-2" type="text" placeholder="Search users.." v-model="username_search">
-          <button class="btn btn-outline-success my-2 my-sm-0 mr2" v-on:click.prevent="getUsers()">Search Users</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
         </div>
       </a>
       {% if user.is_authenticated %}
-        <a @click="getFeed()" class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Feed">Feed</a>
+        <a @click.prevent="showFeedNotAll=true, showPostsNotUsers=true" class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Feed">Feed</a>
       {% endif %}
       <a class="link dark-gray f6 f5-ns dib" href="#" title="Contact">Temp</a>
     </div>
@@ -78,9 +78,75 @@
               </form>
             </div>
           {% endif %}
+{% comment %} Custom Feed {% endcomment %}
             {% comment %} Dynamically generated content {% endcomment %}
-            <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
-              <div>
+            <article v-for="post in posts" :key="post.pk">
+              <div v-if="showFeedNotAll">
+                <div v-if="isFollowed(post.user)" class="pv3 bt bb b--black-10 ph1 ph0-l">
+                  <div class="flex flex-column flex-row-ns">
+                    <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                      {% comment %} user avatar and buttons {% endcomment %}
+                      <div class="tc">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
+                        {% else %}
+                        <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+                        {% endif %}
+                        <div>
+                        {% if user.is_authenticated %}
+                          <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                          <div v-if="loggedInUser.pk !== post.user.pk">
+                            <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
+                            <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                          </div>
+                        {% endif %}
+                          <a v-if="post.post_response[0]" @click="toggleResponses(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
+                        </div>
+                      </div>
+                    </div>
+                    {% comment %} Decrees generated here {% endcomment %}
+                    <div class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                      <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
+                      <span class="f6 ml2 lh-copy gray mv0 ttu">By <a href="#">${post.user.username}</a> | Followers: ${post.user.followers.length}</span>
+                      <time class="f6 ml2 db gray">${post.created_at}</time>
+                    </div>
+                  </div>
+                  {% comment %} Responses container {% endcomment %}
+                  <div v-if="showResponses(post)">
+                    <div v-for="response in post.post_response" class="mt1 ml4">
+                      <div class="flex flex-column flex-row-ns">
+                        <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                          {% comment %} small user avatar {% endcomment %}
+                          <div class="tc">
+                            {% if user.is_authenticated %}
+                              <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
+                            {% else %}
+                              <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
+                            {% endif %}
+                              <a v-if="loggedInUser.username === response.user" @click.prevent="deleteResponse(response)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                          </div>
+                        </div>
+                        {% comment %} Responses generated here {% endcomment %}
+                        <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                          <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
+                          <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% comment %} add response form {% endcomment %}
+                  {% if user.is_authenticated %}
+                    <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+                      <form method="POST" v-on:submit.prevent="addResponse(post)">
+                        <input type="text" v-model="newResponse.text" maxlength="280" placeholder="Add a response.." required="required"/>
+                        <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                      </form>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+{% comment %} Show all posts if Feed is disabled {% endcomment %}
+              <div v-else class="pv3 bt bb b--black-10 ph1 ph0-l">
                 <div class="flex flex-column flex-row-ns">
                   <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                     {% comment %} user avatar and buttons {% endcomment %}
