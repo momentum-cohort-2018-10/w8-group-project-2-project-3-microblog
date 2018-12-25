@@ -13,6 +13,10 @@
   <nav class="dt w-100 border-box pa3 ph5-ns">
     <div class="dtc v-mid w-75 tr">
       {% comment %} search bars {% endcomment %}
+      {% if user.is_authenticated %}
+        <a @click.prevent="showFeedNotAll=true, showPostsNotUsers=true" class="f6 link dim ph3 pv1 mb2 dib white bg-dark-green" href="#" title="Feed">Feed</a>
+      {% endif %}
+      <a class="f6 link dim ph3 pv1 mb2 dib white bg-dark-blue" @click.prevent="getPosts(), showFeedNotAll=false" href="#">All Posts</a>
       <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="search">
         <div class="form-inline my-2 my-lg-0"> 
           <input class="form-control mr-sm-2" type="text" placeholder="Search posts.." v-model="search_term">
@@ -21,10 +25,6 @@
           <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
         </div>
       </a>
-      {% if user.is_authenticated %}
-        <a @click.prevent="showFeedNotAll=true, showPostsNotUsers=true" class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="Feed">Feed</a>
-      {% endif %}
-      <a class="link dark-gray f6 f5-ns dib" href="#" title="Contact">Temp</a>
     </div>
   </nav>
   <div class="mw9 center ph3-ns">
