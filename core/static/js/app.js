@@ -28,6 +28,8 @@ const vm = new Vue({
     this.getPosts();
     if (requestUserPk !== -1) {
       this.getLoggedInUser();
+    } else {
+      showFeedNotAll = false;
     }
     console.log(this)
   },

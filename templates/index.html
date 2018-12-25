@@ -209,7 +209,9 @@
                 {% endif %}
               </div>
             </article>
-            <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h1>
+            {% if user.is_authenticated %}
+              <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h1>
+            {% endif %}
           </section>
         </div>
       </div>
