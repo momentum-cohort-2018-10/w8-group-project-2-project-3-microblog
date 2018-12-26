@@ -37,15 +37,12 @@
             <div class="tc">
               {% if user.is_authenticated %}
          
-               <div v-if="users[0]"> 
-      
-
-             
-              <h2>Followers: ${user[0].followers.length} | Following: ${user.users_followed.length}</h2>
+               <div v-if="users[0]">
               <hr class="mw3 bb bw1 b--black-10">
             </div>
             <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
-            <h1>@{{ request.user }}</h1>
+            <h1>@${loggedInUser.username}</h1>
+            <h2>Followers: ${loggedInUser.followers.length} Following: ${loggedInUser.users_followed.length}</h2>
             <p class="lh-copy measure center f6 black-70">
               Quite affectionate and outgoing.
               She loves <em>scritches</em> and will
