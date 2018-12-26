@@ -37,6 +37,7 @@ router.register('follows', api_views.FollowViewSet)
 urlpatterns = [
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('profile/', views.profile, name='profile'),
+    path('followers/', views.followers, name='followers'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', views.index, name='home'),

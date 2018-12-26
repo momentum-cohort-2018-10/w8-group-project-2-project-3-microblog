@@ -23,6 +23,8 @@ const vm = new Vue({
     username_search: '',
     showPostsNotUsers: true,
     showFeedNotAll: true,
+    showFollowersNotAll: false,
+    showFollowingNotAll: false,
   },
   mounted: function () {
     this.getPosts();
@@ -115,7 +117,20 @@ const vm = new Vue({
     isFollowed: function (user) {
       return this.loggedInUser.users_followed.includes(user.username)
     },
-    toggleFollow: function (user) {
+    isFollowing: function(user) {
+      return this.loggedInUser.followers.includes(user.username)
+    },
+    isUserPost: function(post) {
+        return this.loggedInUser.posts.includes(post)
+    },
+     getFollowedUsers: function() {
+       if (this.isFollowed(user)) { 
+      this.$http.get(`/api/follows/?followed_user=${user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {
+         this.users = response.data;
+       })
+       }
+     },
+    toggleFollow: function(user) {
       // check if the request user is already following the user
       if (this.isFollowed(user)) {
         // if yes, get the follow object from the api and store it in this.followObject

@@ -31,41 +31,127 @@
     <div class="cf ph2-ns">
       <div class="fl w-25 pa2">
         <div class="outline bg-white pv4">
-        {% comment %} Profile card {% endcomment %}
+        {% comment %} Profile card for logged in users {% endcomment %}
+
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
             <div class="tc">
               {% if user.is_authenticated %}
-                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
-              {% else %}
-                <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
-              {% endif %}
-              <h1 class="f4">Mimi Whitehouse</h1>
+         
+               <div v-if="users[0]">
               <hr class="mw3 bb bw1 b--black-10">
             </div>
-            <p class="lh-copy measure center f6 black-70">
-              Quite affectionate and outgoing.
-              She loves <em>scritches</em> and will
-              roll around on the floor waiting for you give her more of them.
-            </p>
+             <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"></a>
+            <h1>@${loggedInUser.username}</h1>
+            <span>
+              <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
+              <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${loggedInUser.users_followed.length}</a>
+            </span>
+            <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
+            <div>
+              {% else %}
+              <a class="f3 link bg-animate black hover-bg-light-green dib pa3 ph4-l" href="{% url 'registration_register' %}">Create a Decree Account</a>
+
+              {% endif %}
+          
+              </div>
           </article>
+
         </div>
       </div>
+
+      {% comment %} List of Followers  {% endcomment %}
+      <div class="fl w-25-ns pa2" >
+      
+        <div v-if="showFollowingNotAll" >
+        <h1>Following:</h1>
+          
+            <article v-for="user in users" :key="user.pk">
+              <div v-if="isFollowed(user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
+
+                  <h2>@${user.username}</h2>
+                  <span>
+                    <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${user.followers.length}  </a> 
+                    <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
+                  </span>
+                  <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  <div>
+
+                </article>
+              </div>
+            </article>
+         
+       
+            
+            {% comment %} <h2> Suggested: </h2> {% endcomment %}
+          </div>
+        </div>
+
+
+
+      <div class="fl w-third flex justify-between " >
+        <div v-if="showFollowersNotAll" >
+        <h1>Followers:</h1>
+         
+            <article v-for="user in users" :key="user.pk">
+              <div v-if="isFollowing(user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
+
+                  <h2>@${user.username}</h2>
+                  <span>
+                    <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${user.followers.length}  </a> 
+                    <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
+                  </span>
+                  <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  <div>
+
+                </article>
+              </div>
+            </article>
+         
+        
+            
+            {% comment %} <h2> Suggested: </h2> {% endcomment %}
+          </div>
+        </div>
+
+
       {% comment %} show users when user search is run {% endcomment %}
       <div class="fl w-100 w-75-ns pa2" >
         <div v-show="!showPostsNotUsers" >
+        <h2>Suggested:</h2>
           <div v-if="users[0]"> 
             <article v-for="user in users" :key="user.pk">
-              <span>${user.username}</span>
+               <div class="fl w-third flex justify-between " >
+                  <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                    <div class="tc">
+                      <hr class="mw3 bb bw1 b--black-10">
+              <h3>${user.username}</h3>
               {% comment %} show follow button if user is logged in {% endcomment %}
               {% if user.is_authenticated %}
                 <span v-if="loggedInUser.pk !== user.pk">
-                  <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${user.username}</a>
-                  <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${user.username}</a>
+                  <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow</a>
+                  <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow</a>
                 </span>
               {% endif %}
+                    </hr>
+                  </div>
+                </article>
+              </div>
             </article>
           </div>
         </div>
+
         <div v-show="showPostsNotUsers" class="outline bg-white pv4">
           <section class="mw7 center">
           {% comment %} Add a post{% endcomment %}
@@ -119,7 +205,7 @@
                           {% comment %} small user avatar {% endcomment %}
                           <div class="tc">
                             {% if user.is_authenticated %}
-                              <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
+                               <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"></a>
                             {% else %}
                               <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
                             {% endif %}
