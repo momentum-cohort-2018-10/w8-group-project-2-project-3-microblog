@@ -113,6 +113,9 @@ const vm = new Vue({
     isFollowing: function(user) {
       return this.loggedInUser.followers.includes(user.username)
     },
+    isUserPost: function(post) {
+        return this.loggedInUser.posts.includes(post)
+    },
      getFollowedUsers: function() {
        if (this.isFollowed(user)) { 
       this.$http.get(`/api/follows/?followed_user=${user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {

@@ -10,51 +10,122 @@
 
 
 {% block content %}
-<div id="profile-container">
+
+
+<img class="d-block w-100" src="https://www.country1067.com/wp-content/uploads/sites/28/2017/07/logoImage_4.jpg" height=400 >
+<div id="vue-container">
+  <nav class="dt w-100 border-box pa3 ph5-ns">
+    <div class="dtc v-mid w-75 tr">
+      {% comment %} search bars {% endcomment %}
+      {% if user.is_authenticated %}
+        <a @click.prevent="showFeedNotAll=true, showPostsNotUsers=true" class="f6 link dim ph3 pv1 mb2 dib white bg-dark-green" href="#" title="Feed">Feed</a>
+      {% endif %}
+      <a class="f6 link dim ph3 pv1 mb2 dib white bg-dark-blue" @click.prevent="getPosts(), showFeedNotAll=false" href="#">All Posts</a>
+      <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="search">
+        <div class="form-inline my-2 my-lg-0"> 
+          <input class="form-control mr-sm-2" type="text" placeholder="Search posts.." v-model="search_term">
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getPosts(), showFeedNotAll=false">Search Posts</button>
+          <input class="form-control mr-sm-2" type="text" placeholder="Search users.." v-model="username_search">
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
+        </div>
+      </a>
+    </div>
+  </nav>
   <div class="mw9 center ph3-ns">
     <div class="cf ph2-ns">
       <div class="fl w-25 pa2">
         <div class="outline bg-white pv4">
-        {% comment %} Profile card {% endcomment %}
+        {% comment %} Profile card for logged in users {% endcomment %}
+
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-              <div class="tc">
-                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Photo of a kitty staring at you">
-                <h1 class="f4">Mimi Whitehouse</h1>
-                <hr class="mw3 bb bw1 b--black-10">
+            <div class="tc">
+              {% if user.is_authenticated %}
+         
+               <div v-if="users[0]">
+              <hr class="mw3 bb bw1 b--black-10">
+            </div>
+             <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"></a>
+            <h1>@${loggedInUser.username}</h1>
+            <span>
+              <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
+              <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${loggedInUser.users_followed.length}</a>
+            </span>
+            <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
+            <div>
+              {% else %}
+              <a class="f3 link bg-animate black hover-bg-light-green dib pa3 ph4-l" href="{% url 'registration_register' %}">Create a Decree Account</a>
+
+              {% endif %}
+          
               </div>
-            <p class="lh-copy measure center f6 black-70">
-              Quite affectionate and outgoing.
-              She loves to get chin scratches and will
-              roll around on the floor waiting for you give her more of them.
-            </p>
           </article>
-        </div>
-      </div>
-      <div class="fl w-100 w-75-ns pa2">
-        <div class="outline bg-white pv4">
-          <section class="mw7 center">
-          {% comment %} Add a post through api {% endcomment %}
 
 
-            <div class="pv3 bt bb b--black-10 ph1 ph0-l">
-              <p> Add a tweet</p>
+                <div class="fl w-25-ns pa2" >
+      
+        <div v-if="showFollowingNotAll" >
+        <h1>Following:</h1>
+          
+            <article v-for="user in users" :key="user.pk">
+              <div v-if="isFollowed(user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
+
+                  <h2>@${user.username}</h2>
+                  <span>
+                    <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${user.followers.length}  </a> 
+                    <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
+                  </span>
+                  <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  <div>
+
+                </article>
+              </div>
             </article>
-            <div class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" v-on:click.prevent="getPosts()">Search</button>
-            </div>
-                <form method="POST" v-on:submit.prevent="addPost()">
-                  {% csrf_token %}
-                  <label for="post_text">Decree</label>
-                  <textarea type="text" v-model="newPost.text" placeholder="Make your decree" required="required"></textarea>
-                  <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
-                </form>
-            </div>
-            {% comment %} Dynamically generated content {% endcomment %}
-            <article v-for="post in posts" :key="post.pk" class="pv3 bt bb b--black-10 ph1 ph0-l">
-              <div class="flex flex-column flex-row-ns">
-                <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
-                  {% comment %} user avatar {% endcomment %}
+         
+       
+            
+            {% comment %} <h2> Suggested: </h2> {% endcomment %}
+          </div>
+        </div>
+
+
+
+      <div class="fl w-third flex justify-between " >
+        <div v-if="showFollowersNotAll" >
+        <h1>Followers:</h1>
+         
+            <article v-for="user in users" :key="user.pk">
+              <div v-if="isFollowing(user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
+
+                  <h2>@${user.username}</h2>
+                  <span>
+                    <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${user.followers.length}  </a> 
+                    <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
+                  </span>
+                  <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  <div>
+
+                </article>
+              </div>
+            </article>
+
+
+
+          
+
+
+                  {% comment %} 
                   <div class="tc">
 
                      <a :href="{% url 'profile' %}"><img src="http://tachyons.io/img/logo.jpg" class="br-100 h3 w3 dib" title="Avatar"></a>
@@ -64,36 +135,5 @@
                     </div>
                   </div>
                 </div>
-                {% comment %} Tweets generated here {% endcomment %}
-                <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                  <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
-                  <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${post.user.username}</a></span></p>
-                  <time class="f6 ml2 db gray">${post.created_at}</time>
-                </div>
-              </div>
-              {% comment %} Responses container {% endcomment %}
-              <div v-if="activated(post)">
-                <div v-for="response in post.post_response"class="mt1 ml4">
-                  <div class="flex flex-column flex-row-ns">
-                    <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
-                      {% comment %} small user avatar {% endcomment %}
-                      <div class="tc">
-                        <img src="http://tachyons.io/img/logo.jpg" class="br3 h3 w3 dib" alt="avatar image">
-                      </div>
-                    </div>
-                    {% comment %} Responses generated here {% endcomment %}
-                    <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
-                      <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
-                      <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </section>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock content %}
+                 Tweets generated here {% endcomment %}
+  {% endblock %}
