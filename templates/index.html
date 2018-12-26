@@ -44,7 +44,7 @@
             <h1>@${loggedInUser.username}</h1>
             <span>
               <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" >Followers: ${loggedInUser.followers.length}</a> 
-              <a @click.prevent="getUsers(), showPostsNotUsers=false, showFollowingNotAll=true" href="#">Following: ${loggedInUser.users_followed.length}</a>
+              <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#">Following: ${loggedInUser.users_followed.length}</a>
             </span>
             <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
             <div>
@@ -67,9 +67,23 @@
               <p v-if="isFollowed(user)">
               <span>Following: ${user.username}</span></p>
             </article>
+            </div>
             <h2> Suggested: </h2>
           </div>
         </div>
+
+      <div class="fl w-100 w-75-ns pa2" >
+        <div v-if="showFollowersNotAll" >
+          <div v-if="users[0]"> 
+            <article v-for="user in users" :key="user.pk">
+              <p v-if="isFollowing(user)">
+              <span>Followed by: ${user.username}</span></p>
+            </article>
+          </div>
+            <h2> Suggested: </h2>
+
+          </div>
+      </div>
 
 
       {% comment %} show users when user search is run {% endcomment %}
