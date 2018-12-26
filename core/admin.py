@@ -4,7 +4,7 @@ from core.models import User, Post, Follow, Response
 
 class UserAdmin(admin.ModelAdmin):
     model = User
-    list_display = ("username", )
+    list_display = ("username", "bio",)
 
 
 class PostAdmin(admin.ModelAdmin):

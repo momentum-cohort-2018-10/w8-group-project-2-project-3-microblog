@@ -22,6 +22,8 @@ const vm = new Vue({
     username_search: '',
     showPostsNotUsers: true,
     showFeedNotAll: true,
+    showFollowersNotAll: false,
+    showFollowingNotAll: false,
   },
   mounted: function() {
     this.getPosts();
