@@ -9,3 +9,6 @@ def index(request):
 
 def profile(request):
     return render(request, 'profilepage.html')
+
+def followers(request):
+    return render(request, 'followers.html')
