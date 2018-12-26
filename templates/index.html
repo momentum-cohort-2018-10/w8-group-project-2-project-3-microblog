@@ -43,8 +43,8 @@
             <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
             <h1>@${loggedInUser.username}</h1>
             <span>
-              <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" >Followers: ${loggedInUser.followers.length}</a> 
-              <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#">Following: ${loggedInUser.users_followed.length}</a>
+              <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
+              <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${loggedInUser.users_followed.length}</a>
             </span>
             <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
             <div>
@@ -60,35 +60,76 @@
       </div>
 
       {% comment %} List of Followers  {% endcomment %}
-      <div class="fl w-100 w-75-ns pa2" >
+      <div class="fl w-25-ns pa2" >
+      
         <div v-if="showFollowingNotAll" >
-          <div v-if="users[0]"> 
+        <h1>Following:</h1>
+          
             <article v-for="user in users" :key="user.pk">
-              <p v-if="isFollowed(user)">
-              <span>Following: ${user.username}</span></p>
+              <div v-if="isFollowed(user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
+
+                  <h2>@${user.username}</h2>
+                  <span>
+                    <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${user.followers.length}  </a> 
+                    <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
+                  </span>
+                  <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  <div>
+
+                </article>
+              </div>
             </article>
-            </div>
-            <h2> Suggested: </h2>
+         
+       
+            
+            {% comment %} <h2> Suggested: </h2> {% endcomment %}
           </div>
         </div>
 
-      <div class="fl w-100 w-75-ns pa2" >
-        <div v-if="showFollowersNotAll" >
-          <div v-if="users[0]"> 
-            <article v-for="user in users" :key="user.pk">
-              <p v-if="isFollowing(user)">
-              <span>Followed by: ${user.username}</span></p>
-            </article>
-          </div>
-            <h2> Suggested: </h2>
 
+
+      <div class="fl w-third flex justify-between " >
+        <div v-if="showFollowersNotAll" >
+        <h1>Followers:</h1>
+         
+            <article v-for="user in users" :key="user.pk">
+              <div v-if="isFollowing(user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
+
+                  <h2>@${user.username}</h2>
+                  <span>
+                    <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${user.followers.length}  </a> 
+                    <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
+                  </span>
+                  <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  <div>
+
+                </article>
+              </div>
+            </article>
+         
+        
+            
+            {% comment %} <h2> Suggested: </h2> {% endcomment %}
           </div>
-      </div>
+        </div>
 
 
       {% comment %} show users when user search is run {% endcomment %}
       <div class="fl w-100 w-75-ns pa2" >
         <div v-show="!showPostsNotUsers" >
+        <h2>Suggested:</h2>
           <div v-if="users[0]"> 
             <article v-for="user in users" :key="user.pk">
               <span>${user.username}</span>
