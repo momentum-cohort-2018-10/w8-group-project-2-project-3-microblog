@@ -32,22 +32,35 @@
       <div class="fl w-25 pa2">
         <div class="outline bg-white pv4">
         {% comment %} Profile card {% endcomment %}
+
           <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
             <div class="tc">
               {% if user.is_authenticated %}
-                <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
-              {% else %}
-                <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
-              {% endif %}
-              <h1 class="f4">Mimi Whitehouse</h1>
+         
+               <div v-if="users[0]"> 
+      
+
+             
+              <h2>Followers: ${user[0].followers.length} | Following: ${user.users_followed.length}</h2>
               <hr class="mw3 bb bw1 b--black-10">
             </div>
+            <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
+            <h1>@{{ request.user }}</h1>
             <p class="lh-copy measure center f6 black-70">
               Quite affectionate and outgoing.
               She loves <em>scritches</em> and will
               roll around on the floor waiting for you give her more of them.
             </p>
+
+            <div>
+              {% else %}
+              <h2> Create a Decree account!</h2>
+
+              {% endif %}
+          
+              </div>
           </article>
+
         </div>
       </div>
       {% comment %} show users when user search is run {% endcomment %}
