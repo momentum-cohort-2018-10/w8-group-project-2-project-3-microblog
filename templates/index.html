@@ -42,7 +42,10 @@
             </div>
             <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
             <h1>@${loggedInUser.username}</h1>
-            <h2>Followers: ${loggedInUser.followers.length} Following: ${loggedInUser.users_followed.length}</h2>
+            <span>
+              <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" >Followers: ${loggedInUser.followers.length}</a> 
+              <a @click.prevent="getUsers(), showPostsNotUsers=false, showFollowingNotAll=true" href="#">Following: ${loggedInUser.users_followed.length}</a>
+            </span>
             <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
             <div>
               {% else %}
@@ -58,18 +61,13 @@
 
       {% comment %} List of Followers  {% endcomment %}
       <div class="fl w-100 w-75-ns pa2" >
-        <div v-show="!showPostsNotUsers" >
+        <div v-if="showFollowingNotAll" >
           <div v-if="users[0]"> 
             <article v-for="user in users" :key="user.pk">
-              <span>${user.username}</span>
-              {% comment %} show follow button if user is logged in {% endcomment %}
-              {% if user.is_authenticated %}
-                <span v-if="loggedInUser.pk !== user.pk">
-                  <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${user.username}</a>
-                  <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${user.username}</a>
-                </span>
-              {% endif %}
+              <p v-if="isFollowed(user)">
+              <span>Following: ${user.username}</span></p>
             </article>
+            <h2> Suggested: </h2>
           </div>
         </div>
 
