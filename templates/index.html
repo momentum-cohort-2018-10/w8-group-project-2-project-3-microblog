@@ -40,7 +40,7 @@
                <div v-if="users[0]">
               <hr class="mw3 bb bw1 b--black-10">
             </div>
-            <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
+             <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"></a>
             <h1>@${loggedInUser.username}</h1>
             <span>
               <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
@@ -205,7 +205,7 @@
                           {% comment %} small user avatar {% endcomment %}
                           <div class="tc">
                             {% if user.is_authenticated %}
-                              <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar">
+                               <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"></a>
                             {% else %}
                               <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
                             {% endif %}
