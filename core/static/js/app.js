@@ -110,6 +110,16 @@ const vm = new Vue({
     isFollowed: function(user) {
       return this.loggedInUser.users_followed.includes(user.username)
     },
+    isFollowing: function(user) {
+      return this.loggedInUser.followers.includes(user.username)
+    },
+    // getFollowedUsers: function() {
+    //   if (this.isFollowed(user)) { 
+    //     this.$http.get(`/api/follows/?followed_user=${user.pk}`).then((response) => {
+    //       this.users = response.data;
+    //   })
+    //   }
+    // },
     toggleFollow: function(user) {
       // check if the request user is already following the user
       if (this.isFollowed(user)) {
