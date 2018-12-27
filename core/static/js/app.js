@@ -3,6 +3,7 @@ Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
 const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
 const requestUser = document.getElementById('request-user').value
+let displayedItems = 0
 
 const vm = new Vue({
   el: '#vue-container',
@@ -11,7 +12,6 @@ const vm = new Vue({
     posts: [],
     users: [],
     active: [],
-    displayedItems: 0,
     followObject: [],
     loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': [] },
     newResponse: { 'text': null, 'post': null, 'user': requestUser },
@@ -35,10 +35,15 @@ const vm = new Vue({
     }
     console.log(this)
   },
-  updated: function () {
-    this.displayedItems = this.$refs.numItems.length
-  },
   methods: {
+    count: function () {
+      displayedItems++
+      console.log(displayedItems)
+      return true;
+    },
+    resetCount: function () {
+      displayedItems = 0
+    },
     toggleResponses: function (post) {
       if (this.active.includes(post.pk)) {
         this.active.splice(this.active.indexOf(post.pk), 1)
@@ -51,9 +56,11 @@ const vm = new Vue({
       return this.active.includes(post.pk)
     },
     getPosts: function () {
+      displayedItems = 0
       this.$http.get(`/api/posts/?search=${this.search_term}`).then((response) => {
-        this.posts = response.data;
         this.search_term = ''
+        displayedItems = 0
+        this.posts = response.data;
         this.showPostsNotUsers = true;
       })
         .catch((err) => {
@@ -61,10 +68,11 @@ const vm = new Vue({
         })
     },
     getUsers: function () {
+      displayedItems = 0
       this.$http.get(`/api/users/?search=${this.username_search}`).then((response) => {
-        this.users = response.data;
         this.username_search = ''
         this.showPostsNotUsers = false;
+        this.users = response.data;
       })
         .catch((err) => {
           console.log(err);
