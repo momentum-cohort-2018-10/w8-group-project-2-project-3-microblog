@@ -14,13 +14,13 @@
     <div class="dtc v-mid w-75 tr">
       {% comment %} search bars {% endcomment %}
       {% if user.is_authenticated %}
-        <a @click.prevent="showFeedNotAll=true, showPostsNotUsers=true" class="f6 link dim ph3 pv1 mb2 dib white bg-dark-green" href="#" title="Feed">Feed</a>
+        <a @click.prevent="resetCount(), showFeedNotAll=true, showPostsNotUsers=true" class="f6 link dim ph3 pv1 mb2 dib white bg-dark-green" href="#" title="Feed">Feed</a>
       {% endif %}
-      <a class="f6 link dim ph3 pv1 mb2 dib white bg-dark-blue" @click.prevent="getPosts(), showFeedNotAll=false" href="#">All Posts</a>
+      <a class="f6 link dim ph3 pv1 mb2 dib white bg-dark-blue" @click.prevent="showFeedNotAll=false, getPosts()" href="#">All Posts</a>
       <a class="link dark-gray f6 f5-ns dib mr3 mr4-ns" href="#" title="search">
         <div class="form-inline my-2 my-lg-0"> 
           <input class="form-control mr-sm-2" type="text" placeholder="Search posts.." v-model="search_term">
-          <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getPosts(), showFeedNotAll=false">Search Posts</button>
+          <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="showFeedNotAll=false, getPosts()">Search Posts</button>
           <input class="form-control mr-sm-2" type="text" placeholder="Search users.." v-model="username_search">
           <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
         </div>
@@ -128,11 +128,11 @@
 
       {% comment %} show users when user search is run {% endcomment %}
       <div class="fl w-100 w-75-ns pa2" >
-        <div v-show="!showPostsNotUsers" >
+        <div v-if="!showPostsNotUsers" >
         <h2>Suggested:</h2>
           <div v-if="users[0]"> 
             <article v-for="user in users" :key="user.pk">
-               <div class="fl w-third flex justify-between " >
+               <div v-if="count()" class="fl w-third flex justify-between " >
                   <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
                     <div class="tc">
                       <hr class="mw3 bb bw1 b--black-10">
@@ -152,25 +152,28 @@
           </div>
         </div>
 
-        <div v-show="showPostsNotUsers" class="outline bg-white pv4">
+        <div v-if="showPostsNotUsers" class="outline bg-white pv4">
           <section class="mw7 center">
           {% comment %} Add a post{% endcomment %}
           <div>
           {% if user.is_authenticated %}
             <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
               <form method="POST" v-on:submit.prevent="addPost()">
-                <input type="text" v-model="newPost.text" maxlength="280" placeholder="Make your decree" required="required"/>
+                <input type="text" v-model="newPost.text" maxlength="280" placeholder="Make a decree" required="required"/>
                 <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
               </form>
             </div>
           {% endif %}
 {% comment %} Custom Feed {% endcomment %}
             {% comment %} Dynamically generated content {% endcomment %}
+
+            {% comment %} <img src="{% static 'images/loading.gif' %}" alt=""> {% endcomment %}
+            
             <article v-for="post in posts" :key="post.pk">
               <div v-if="showFeedNotAll">
-                <div v-if="isFollowed(post.user)" class="pv3 bt bb b--black-10 ph1 ph0-l">
-                  <div class="flex flex-column flex-row-ns">
-                    <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                <div v-if="isFollowed(post.user)"class="pv3 bt bb b--black-10 ph1 ph0-l">
+                  <div v-if="count()" class="flex flex-column flex-row-ns">
+                    <div class="pl1-ns order-1 mb2 mr4 mb0-ns w-100 w-30-ns">
                       {% comment %} user avatar and buttons {% endcomment %}
                       <div class="tc">
                         {% if user.is_authenticated %}
@@ -180,24 +183,24 @@
                         {% endif %}
                         <div>
                         {% if user.is_authenticated %}
-                          <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                          <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
                           <div v-if="loggedInUser.pk !== post.user.pk">
-                            <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
-                            <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                            <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
+                            <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Follow ${post.user.username}</a>
                           </div>
                         {% endif %}
-                          <a v-if="post.post_response[0]" @click="toggleResponses(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
+                          <a v-if="post.post_response[0]" @click="toggleResponses(post)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
                         </div>
                       </div>
                     </div>
                     {% comment %} Decrees generated here {% endcomment %}
-                    <div class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                    <div ref="numItems" class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
                       <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
                       <span class="f6 ml2 lh-copy gray mv0 ttu">By <a href="#">${post.user.username}</a> | Followers: ${post.user.followers.length}</span>
                       <time class="f6 ml2 db gray">${post.created_at}</time>
                     </div>
                   </div>
-                  {% comment %} Responses container {% endcomment %}
+                  {% comment %} Responses {% endcomment %}
                   <div v-if="showResponses(post)">
                     <div v-for="response in post.post_response" class="mt1 ml4">
                       <div class="flex flex-column flex-row-ns">
@@ -209,11 +212,13 @@
                             {% else %}
                               <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
                             {% endif %}
-                              <a v-if="loggedInUser.username === response.user" @click.prevent="deleteResponse(response)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                              <div>
+                                <a v-if="loggedInUser.username === response.user" @click.prevent="deleteResponse(response)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
+                              </div>
                           </div>
                         </div>
                         {% comment %} Responses generated here {% endcomment %}
-                        <div class="w-100 w-70-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                        <div class="w-100 w-70-ns mr1 br3 shadow-2 pv3 pr3-ns order-2">
                           <h1 class="f3 athelas mt0 lh-title">${response.text}</h1>
                           <p class="f6 ml2 lh-copy gray mv0">By <span class="ttu"><a href="#">${response.user}</a> <small>on ${response.created_at}</small></span></p>
                         </div>
@@ -233,29 +238,29 @@
               </div>
 {% comment %} Show all posts if Feed is disabled {% endcomment %}
               <div v-else class="pv3 bt bb b--black-10 ph1 ph0-l">
-                <div class="flex flex-column flex-row-ns">
-                  <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
+                <div v-if="count()" class="flex flex-column flex-row-ns">
+                  <div class="pl1-ns order-1 mb2 mr4 mb0-ns w-100 w-30-ns">
                     {% comment %} user avatar and buttons {% endcomment %}
                     <div class="tc">
                       {% if user.is_authenticated %}
-                      <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
+                        <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
                       {% else %}
-                      <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
+                        <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
                       {% endif %}
                       <div>
                       {% if user.is_authenticated %}
-                        <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Delete</a>
+                        <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
                         <div v-if="loggedInUser.pk !== post.user.pk">
-                          <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
-                          <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow ${post.user.username}</a>
+                          <a v-if="isFollowed(post.user)" @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Unfollow ${post.user.username}</a>
+                          <a v-else @click.prevent="toggleFollow(post.user)" class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Follow ${post.user.username}</a>
                         </div>
                       {% endif %}
-                        <a v-if="post.post_response[0]" @click="toggleResponses(post)"  class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
+                        <a v-if="post.post_response[0]" @click="toggleResponses(post)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Responses: ${post.post_response.length}</a>
                       </div>
                     </div>
                   </div>
                   {% comment %} Decrees generated here {% endcomment %}
-                  <div class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
+                  <div ref="numItems" class="w-100 w-65-ns mr1 br3 shadow-2 pa3 pr3-ns order-2">
                     <h1 class="f3 athelas mt0 lh-title">${post.text}</h1>
                     <span class="f6 ml2 lh-copy gray mv0 ttu">By <a href="#">${post.user.username}</a> | Followers: ${post.user.followers.length}</span>
                     <time class="f6 ml2 db gray">${post.created_at}</time>
@@ -295,6 +300,10 @@
                 {% endif %}
               </div>
             </article>
+            {% if user.is_authenticated %}
+              <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h1>
+              <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
+            {% endif %}
           </section>
         </div>
       </div>
