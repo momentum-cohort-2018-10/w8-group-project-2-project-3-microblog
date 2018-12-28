@@ -195,26 +195,26 @@
       <div class="fl w-100 w-75-ns pa2" >
         <div v-if="!showPostsNotUsers" >
         <h2>Suggested:</h2>
-          <div v-if="users[0]"> 
-            <article v-for="user in users" :key="user.pk">
-               <div v-if="count()" class="fl w-third flex justify-between " >
-                  <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-                    <div class="tc">
-                      <hr class="mw3 bb bw1 b--black-10">
-              <h3>${user.username}</h3>
-              {% comment %} show follow button if user is logged in {% endcomment %}
-              {% if user.is_authenticated %}
-                <span v-if="loggedInUser.pk !== user.pk">
-                  <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow</a>
-                  <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow</a>
-                </span>
-              {% endif %}
-                    </hr>
-                  </div>
-                </article>
-              </div>
-            </article>
-          </div>
+        <div v-if="users[0]"> 
+          <article v-for="user in users" :key="user.pk">
+              <div v-if="count()" class="fl profile-card w-third-ns ma2 flex flex-wrap" >
+                <article class="center profile-card bg-white br3 pa3  pa4-ns ba b--black-10">
+                  <div class="tc">
+                    <hr class="mw3 bb bw1 b--black-10">
+                    <h3>${user.username | truncate(19, '..')}</h3>
+                    {% comment %} show follow button if user is logged in {% endcomment %}
+                    {% if user.is_authenticated %}
+                      <span v-if="loggedInUser.pk !== user.pk">
+                        <a v-if="isFollowed(user)" @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Unfollow</a>
+                        <a v-else @click.prevent="toggleFollow(user)" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">Follow</a>
+                      </span>
+                    {% endif %}
+                  
+                </div>
+              </article>
+            </div>
+          </article>
+        </div>
         </div>
 
         <div v-if="showPostsNotUsers" class="outline bg-white pv4">
@@ -230,10 +230,8 @@
             </div>
           {% endif %}
 {% comment %} Custom Feed {% endcomment %}
-            {% comment %} Dynamically generated content {% endcomment %}
 
-            {% comment %} <img src="{% static 'images/loading.gif' %}" alt=""> {% endcomment %}
-            
+            {% comment %} Dynamically generated content {% endcomment %}
             <article v-for="post in posts" :key="post.pk">
               <div v-if="showFeedNotAll">
                 <div v-if="isFollowed(post.user)"class="pv3 bt bb b--black-10 ph1 ph0-l">
@@ -366,8 +364,12 @@
               </div>
             </article>
             {% if user.is_authenticated %}
-              <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h3>
-              <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
+
+              <div v-if="!displayedItems">
+                <h3>There doesn't seem to be anything here. Try following some users and coming back!</h3>
+                <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
+              </div>
+
             {% endif %}
           </section>
         </div>

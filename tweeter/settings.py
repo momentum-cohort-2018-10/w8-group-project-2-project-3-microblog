@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'debug_toolbar',
 
     # third party app
     'registration',
@@ -57,7 +56,8 @@ INSTALLED_APPS = [
     'el_pagination',
     'allauth.socialaccount.providers.github',
     'django_filters',
-
+    'debug_toolbar',
+    
     # my apps
     'core',
     'api',
@@ -192,10 +192,3 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 INTERNAL_IPS = ['127.0.0.1']
-
-# GRAVATAR_URL = 'http://www.gravatar.com/'
-# GRAVATAR_BASE_URL = 'https://secure.gravatar.com/'
-# GRAVATAR_DEFAULT_SIZE = '80'
-# GRAVATAR_DEFAULT_IMAGE = 'mm'
-# GRAVATAR_DEFAULT_RATING = 'g'
-# GRAVATAR_DEFAULT_SECURE = True

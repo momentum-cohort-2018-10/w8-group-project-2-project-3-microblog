@@ -20,8 +20,6 @@ class Post(models.Model):
     def __str__(self):
         return self.text
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
 
 class Follow(models.Model):
     following_user = models.ForeignKey(
@@ -32,10 +30,6 @@ class Follow(models.Model):
     class Meta:
         unique_together = ("following_user", "followed_user")
 
-    # def save(self, *args, **kwargs):
-    #     if self.followed_user == self.following_user:
-    #         raise 
-    #     super().save(*args, **kwargs)
 
 class Response(models.Model):
     user = models.ForeignKey(to="User", on_delete=models.CASCADE, null=True)

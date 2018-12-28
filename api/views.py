@@ -52,14 +52,6 @@ class PostViewSet(mixins.CreateModelMixin,
     filter_backends = (filters.SearchFilter, )
     search_fields = ('text', )
 
-    # def get_queryset(self):
-    #     if self.kwargs.get('username'):
-    #         username = self.kwargs['username']
-    #         user = get_object_or_404(User, username=username)
-    #         return user.post.all()
-
-    #     return self.request.user.posts.all()
-    
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -81,10 +73,6 @@ class ResponseViewSet(mixins.CreateModelMixin,
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    # def check_object_permissions(self, request, response):
-    #     if request.method != "GET" and response.user != request.user:
-    #         raise PermissionDenied("You are not the owner!!")
-    #     return super().check_object_permissions(request, response)
 
 class FollowViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
