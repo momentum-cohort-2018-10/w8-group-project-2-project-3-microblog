@@ -5,6 +5,9 @@ const requestUserPk = parseInt(document.getElementById('request-user-pk').value)
 const requestUser = document.getElementById('request-user').value
 let displayedItems = 0
 
+// const thisUserPk = parseInt(document.getElementById('user-pk').value) || -2
+// const thisUser = document.getElementById('user').value
+
 const vm = new Vue({
   el: '#vue-container',
   delimiters: ['${', '}'],
@@ -17,6 +20,7 @@ const vm = new Vue({
     followObject: [],
     newBio: {'text': null },
     loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'bio': { 'text':null }, 'users_followed': [] },
+    // currentUser: { 'followers': [], 'pk': -1, 'url': null, 'username': thisUser, 'bio': { 'text':null }, 'users_followed': [] },
     newResponse: { 'text': null, 'post': null, 'user': requestUser },
     currentPost: {},
     message: null,
@@ -105,6 +109,14 @@ const vm = new Vue({
       this.$http.get(`/api/users/${requestUserPk}/`).then((response) => {
         this.loggedInUser = response.data
         this.showFeedNotAll = true
+      })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    getCurrentUser: function () {
+      this.$http.get(`/api/users/${thisUserPk}/`).then((response) => {
+        this.currentUser = response.data
       })
         .catch((err) => {
           console.log(err)

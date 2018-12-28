@@ -239,11 +239,13 @@
                     <div class="pl1-ns order-1 mb2 mr4 mb0-ns w-100 w-30-ns">
                       {% comment %} user avatar and buttons {% endcomment %}
                       <div class="tc">
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
-                        {% else %}
+                        {% comment %} {% if user.is_authenticated %} {% endcomment %}
+                      
+                        {% comment %} <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a> {% endcomment %}
+                        {% comment %} {% else %} {% endcomment %}
+                       
                         <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
-                        {% endif %}
+                        {% comment %} {% endif %} {% endcomment %}
                         <div>
                         {% if user.is_authenticated %}
                           <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
@@ -270,11 +272,11 @@
                         <div class="pl1-ns order-1 mb2 mb0-ns w-100 w-25-ns">
                           {% comment %} small user avatar {% endcomment %}
                           <div class="tc">
-                            {% if user.is_authenticated %}
+                            {% comment %} {% if user.is_authenticated %}
                                <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"></a>
-                            {% else %}
+                            {% else %} {% endcomment %}
                               <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" alt="Profile avatar">
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                               <div>
                                 <a v-if="loggedInUser.username === response.user" @click.prevent="deleteResponse(response)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
                               </div>
@@ -305,11 +307,11 @@
                   <div class="pl1-ns order-1 mb2 mr4 mb0-ns w-100 w-30-ns">
                     {% comment %} user avatar and buttons {% endcomment %}
                     <div class="tc">
-                      {% if user.is_authenticated %}
+                      {% comment %} {% if user.is_authenticated %}
                         <a href="{% url 'profile' %}"><img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" title="Profile avatar"></a>
-                      {% else %}
+                      {% else %} {% endcomment %}
                         <img src="{% static 'images/default_avatar.png' %}" class="br-100 h3 w3 dib" title="Profile avatar">
-                      {% endif %}
+                      {% comment %} {% endif %} {% endcomment %}
                       <div>
                       {% if user.is_authenticated %}
                         <a v-if="loggedInUser.pk === post.user.pk" @click.prevent="deletePost(post)"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>

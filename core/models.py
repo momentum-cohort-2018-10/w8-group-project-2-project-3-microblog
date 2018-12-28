@@ -10,6 +10,7 @@ class User(AbstractUser):
         through_fields=('following_user', 'followed_user'),
         related_name="followers")
     bio = models.CharField(max_length=280, null=True, blank=True)
+    email = models.CharField(max_length=500)
 
 
 class Post(models.Model):
