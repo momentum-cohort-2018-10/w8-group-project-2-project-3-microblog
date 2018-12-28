@@ -9,7 +9,7 @@ class User(AbstractUser):
         through='Follow',
         through_fields=('following_user', 'followed_user'),
         related_name="followers")
-    bio = models.CharField(max_length=280, null=True)
+    bio = models.CharField(max_length=280, null=True, blank=True)
 
 
 class Post(models.Model):

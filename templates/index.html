@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% if user.is_authenticated %}
   {% load app_tags %}
 {% endif %}
 
 {% block title %}
-   Home - {{ block.super }} 
+   Home  {{ block.super }} 
 {% endblock title %}
 
 {% block content %}
@@ -45,8 +45,47 @@
             <span>
               <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
               <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${loggedInUser.users_followed.length}</a>
+             <a @click.prevent="getPosts(), showProfileNotAll=true" href="#7" class="f4 dim blue no-underline">  Posts: ${posts.length}</a>
+
             </span>
-            <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
+              <div class="pv3 bt bb b--black-10 ph1 ph0-l">
+            
+    
+              <p class="lh-copy measure center f4 black-85 f4 dim blue no-underline" href="#">${loggedInUser.bio}</p> 
+              <a @click.prevent="deleteBio()"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
+                  <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+                    <form method="POST" v-on:submit.prevent="addBio()">
+                      <input type="text" v-model="newBio.text" maxlength="280" placeholder="Edit Bio" required="required"/>
+                      <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                    </form>
+       
+                  </div>
+              </div>
+             {% comment %} <div>
+            <b-btn v-b-modal.modalPrevent>Edit Bio</b-btn>
+                  <!-- Main UI -->
+                  <div class="mt-3 mb-3">
+                      Bio:
+                    <ul>
+                  <li v-for="b in bios">{{b}}</li>
+                    </ul>
+                    </div>
+                  <!-- Modal Component -->
+               <b-modal id="modalPrevent"
+                        ref="modal"
+                        title="Edit Your Bio"
+                        @ok="handleOk"
+                        @shown="clearBio">
+                <form @submit.stop.prevent="handleSubmit">
+                <b-form-input type="text"
+                      placeholder="Enter your bio"
+                      v-model="bio"></b-form-input>
+                  </form>
+                </b-modal>
+                    </div>
+     
+            </div> {% endcomment %}
+            
             <div>
               {% else %}
               <a class="f3 link bg-animate black hover-bg-light-green dib pa3 ph4-l" href="{% url 'registration_register' %}">Create a Decree Account</a>
@@ -80,6 +119,13 @@
                     <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
                   </span>
                   <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  {% comment %} <a @click.prevent="deleteBio()"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
+                  <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+                    <form method="POST" v-on:submit.prevent="addBio()">
+                      <input type="text" v-model="newBio.text" maxlength="280" placeholder="Add Bio" required="required"/>
+                      <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                    </form>
+                  </div> {% endcomment %}
                   <div>
 
                 </article>
@@ -124,7 +170,26 @@
             {% comment %} <h2> Suggested: </h2> {% endcomment %}
           </div>
         </div>
+        <div v-if="showProfileNotAll" >
+        <h1>User Posts:</h1>
+          
+            <article v-for="post in posts" :key="post.pk">
+              <div v-if="isUserPost(post.user)">
+                <article class="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div class="tc">
+         
+                    <hr class="mw3 bb bw1 b--black-10">
+        
+            {% comment %} <img src="{{ user|gravatar:50 }}" class="br-100 h3 w3 dib" alt="Profile avatar"> {% endcomment %}
 
+                  <h2>${post.text}</h2>
+                  <p class="lh-copy measure center f4 black-85">${post.user.username}</p>
+
+                </div>
+              </article>
+            </div>
+          </article>
+        </div>
 
       {% comment %} show users when user search is run {% endcomment %}
       <div class="fl w-100 w-75-ns pa2" >
@@ -299,10 +364,12 @@
               </div>
             </article>
             {% if user.is_authenticated %}
+
               <div v-if="!displayedItems">
                 <h3>There doesn't seem to be anything here. Try following some users and coming back!</h3>
                 <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
               </div>
+
             {% endif %}
           </section>
         </div>
