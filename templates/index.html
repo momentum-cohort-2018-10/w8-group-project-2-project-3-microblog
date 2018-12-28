@@ -45,7 +45,7 @@
             <span>
               <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
               <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${loggedInUser.users_followed.length}</a>
-             <a @click.prevent="getPosts(), showProfileNotAll=true" href="#7" class="f4 dim blue no-underline">  Posts: ${posts.length}</a>
+             {% comment %} <a @click.prevent="getPosts(), showProfileNotAll=true" href="#7" class="f4 dim blue no-underline">  Posts: ${posts.length}</a> {% endcomment %}
 
             </span>
               <div class="pv3 bt bb b--black-10 ph1 ph0-l">
