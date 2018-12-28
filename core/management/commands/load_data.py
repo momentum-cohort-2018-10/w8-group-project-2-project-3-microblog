@@ -23,7 +23,7 @@ class Command(BaseCommand):
         users = []
         for fake_user in range(100):
             # double check "create_user" vs "create"
-            fake_user = User.objects.create_user(person.username(), person.email(), 'password')
+            fake_user = User.objects.create_user(person.username(), person.email(), 'password', bio='Default Bio')
             users.append(fake_user)
         print("100 Fake Users Created")
 
