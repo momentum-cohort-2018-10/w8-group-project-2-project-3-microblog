@@ -9,11 +9,14 @@ const vm = new Vue({
   el: '#vue-container',
   delimiters: ['${', '}'],
   data: {
+    //bio: '',
+   // bios: [],
     posts: [],
     users: [],
     active: [],
     followObject: [],
-    loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': [] },
+    newBio: {'text': null, 'user': requestUser },
+    loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'bio': { 'text':null }, 'users_followed': [] },
     newResponse: { 'text': null, 'post': null, 'user': requestUser },
     currentPost: {},
     message: null,
@@ -44,6 +47,22 @@ const vm = new Vue({
     resetCount: function () {
       displayedItems = 0
     },
+    // clearBio() {
+    //   this.bio = ''
+    // },
+    // handleOK (evt) {
+    //   evt.preventDefault()
+    //   if (!this.bio) {
+    //     alert('Please enter your bio')
+    //   } else {
+    //     this.handleSubmit()
+    //   }
+    // },
+    // handleSubmit () {
+    //   this.bios.push(this.bio)
+    //   this.clearBio()
+    //   this.$refs.modal.hide()
+    //   },
     toggleResponses: function (post) {
       if (this.active.includes(post.pk)) {
         this.active.splice(this.active.indexOf(post.pk), 1)
@@ -55,6 +74,7 @@ const vm = new Vue({
     showResponses: function (post) {
       return this.active.includes(post.pk)
     },
+    
     getPosts: function () {
       displayedItems = 0
       this.$http.get(`/api/posts/?search=${this.search_term}`).then((response) => {
@@ -86,6 +106,15 @@ const vm = new Vue({
           console.log(err)
         })
     },
+    getBio: function () {
+      this.$http.get(`/api/users/${this.user.bio}`).then((response) => {
+        this.bios = response.data;
+        this.updateBio = true;
+      })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
     addPost: function () {
       this.$http.post('/api/posts/', this.newPost).then((response) => {
         this.getPosts();
@@ -95,6 +124,15 @@ const vm = new Vue({
           console.log(err)
         })
     },
+    addBio: function (user) {
+      this.$http.post('/api/users', this.newBio).then((response) => {
+        this.getUsers();
+        this.newBio.text = ''
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     deletePost: function (post) {
       this.$http.delete(`/api/posts/${post.pk}/`).then((response) => {
         this.getPosts();
@@ -102,6 +140,15 @@ const vm = new Vue({
         .catch((err) => {
           console.log(err)
         })
+    },
+    deleteBio: function (user) {
+      this.$http.delete(`/api/users/${user.bio.pk}/`).then((response) => {
+        this.getUsers();
+        this.getPosts();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     addResponse: function (post) {
       this.newResponse.post = post.pk

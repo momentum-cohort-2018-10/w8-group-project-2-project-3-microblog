@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% if user.is_authenticated %}
   {% load app_tags %}
 {% endif %}
 
 {% block title %}
-   Home - {{ block.super }} 
+   Home  {{ block.super }} 
 {% endblock title %}
 
 {% block content %}
@@ -46,7 +46,44 @@
               <a @click.prevent="getUsers(), showFollowersNotAll=true" href="#" class="f4 dim blue no-underline">Followers: ${loggedInUser.followers.length}  </a> 
               <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${loggedInUser.users_followed.length}</a>
             </span>
-            <p class="lh-copy measure center f4 black-85">${loggedInUser.bio}</p>
+              <div class="pv3 bt bb b--black-10 ph1 ph0-l">
+            
+    
+              <p class="lh-copy measure center f4 black-85 f4 dim blue no-underline" href="#">${loggedInUser.bio}</p> 
+              <a @click.prevent="deleteBio()"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
+                  <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+                    <form method="POST" v-on:submit.prevent="addBio()">
+                      <input type="text" v-model="newBio.text" maxlength="280" placeholder="Edit Bio" required="required"/>
+                      <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                    </form>
+       
+                  </div>
+              </div>
+             {% comment %} <div>
+            <b-btn v-b-modal.modalPrevent>Edit Bio</b-btn>
+                  <!-- Main UI -->
+                  <div class="mt-3 mb-3">
+                      Bio:
+                    <ul>
+                  <li v-for="b in bios">{{b}}</li>
+                    </ul>
+                    </div>
+                  <!-- Modal Component -->
+               <b-modal id="modalPrevent"
+                        ref="modal"
+                        title="Edit Your Bio"
+                        @ok="handleOk"
+                        @shown="clearBio">
+                <form @submit.stop.prevent="handleSubmit">
+                <b-form-input type="text"
+                      placeholder="Enter your bio"
+                      v-model="bio"></b-form-input>
+                  </form>
+                </b-modal>
+                    </div>
+     
+            </div> {% endcomment %}
+            
             <div>
               {% else %}
               <a class="f3 link bg-animate black hover-bg-light-green dib pa3 ph4-l" href="{% url 'registration_register' %}">Create a Decree Account</a>
@@ -80,6 +117,13 @@
                     <a @click.prevent="getUsers(), showFollowingNotAll=true" href="#7" class="f4 dim blue no-underline">  Following: ${user.users_followed.length}</a>
                   </span>
                   <p class="lh-copy measure center f4 black-85">${user.bio}</p>
+                  {% comment %} <a @click.prevent="deleteBio()"  class="f6 grow no-underline br-pill ba ph3 dib mid-gray" href="#0">Delete</a>
+                  <div class="pv3 bt bb b--black-10 ph1 ph0-l">           
+                    <form method="POST" v-on:submit.prevent="addBio()">
+                      <input type="text" v-model="newBio.text" maxlength="280" placeholder="Add Bio" required="required"/>
+                      <button type="submit" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray">Submit</button>
+                    </form>
+                  </div> {% endcomment %}
                   <div>
 
                 </article>
@@ -301,7 +345,7 @@
               </div>
             </article>
             {% if user.is_authenticated %}
-              <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h1>
+              <h3 v-if="!displayedItems">There doesn't seem to be anything here. Try following some users and coming back!</h3>
               <button class="btn btn-outline-success my-2 my-sm-0 mr2" @click.prevent="getUsers()">Search Users</button>
             {% endif %}
           </section>

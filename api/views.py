@@ -21,6 +21,13 @@ class UserViewSet(mixins.CreateModelMixin,
     filter_backends = (filters.SearchFilter, )
     search_fields = ('username', )
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(UserViewSet, self).dispatch(*args, **kwargs)
+
     # def get_follower_count(self):
     #     # queryset= User.objects.all()
     #     queryset= self.request.user
@@ -52,6 +59,7 @@ class PostViewSet(mixins.CreateModelMixin,
     #         return user.post.all()
 
     #     return self.request.user.posts.all()
+    
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
