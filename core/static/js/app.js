@@ -15,7 +15,7 @@ const vm = new Vue({
     users: [],
     active: [],
     followObject: [],
-    newBio: {'text': null, 'user': requestUser },
+    newBio: {'text': null },
     loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'bio': { 'text':null }, 'users_followed': [] },
     newResponse: { 'text': null, 'post': null, 'user': requestUser },
     currentPost: {},
@@ -28,6 +28,8 @@ const vm = new Vue({
     showFeedNotAll: true,
     showFollowersNotAll: false,
     showFollowingNotAll: false,
+    updateBio: true,
+    showProfileNotAll: false,
   },
   mounted: function () {
     this.getPosts();
@@ -107,7 +109,7 @@ const vm = new Vue({
         })
     },
     getBio: function () {
-      this.$http.get(`/api/users/${this.user.bio}`).then((response) => {
+      this.$http.get(`/api/users/?bio=${this.user.bio}/`).then((response) => {
         this.bios = response.data;
         this.updateBio = true;
       })
@@ -125,7 +127,8 @@ const vm = new Vue({
         })
     },
     addBio: function (user) {
-      this.$http.post('/api/users', this.newBio).then((response) => {
+      this.$http.patch(`/api/users/${user.bio.pk}`, this.newBio).then((response) => {
+        this.getBio();
         this.getUsers();
         this.newBio.text = ''
       })
@@ -143,6 +146,7 @@ const vm = new Vue({
     },
     deleteBio: function (user) {
       this.$http.delete(`/api/users/${user.bio.pk}/`).then((response) => {
+        this.getBio();
         this.getUsers();
         this.getPosts();
       })
@@ -176,7 +180,17 @@ const vm = new Vue({
       return this.loggedInUser.followers.includes(user.username)
     },
     isUserPost: function(post) {
-        return this.loggedInUser.posts.includes(post)
+        return this.loggedInUser.username.includes(post.user.username)
+    },
+    isUser: function (user) {
+      if (this.user.username === user.username) {
+        return user
+      }
+    },
+    getUserPosts: function(post) {
+     this.$http.get(`/api/posts/?post.user=${this.post.user.pk}`).then((response) => {
+        this.posts = response.data;
+      })
     },
      getFollowedUsers: function() {
        if (this.isFollowed(user)) { 

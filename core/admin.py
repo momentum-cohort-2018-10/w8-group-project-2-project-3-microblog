@@ -1,6 +1,9 @@
 from django.contrib import admin
 from core.models import User, Post, Follow, Response
 
+# class UploadAdmin(admin.ModelAdmin):
+#     list_display= ('post',)
+#     list_display_links = ('post',)
 
 class UserAdmin(admin.ModelAdmin):
     model = User
@@ -32,6 +35,7 @@ class FollowAdmin(admin.ModelAdmin):
     )
 
 
+# admin.sit.register(Upload, UploadAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Response, ResponseAdmin)
