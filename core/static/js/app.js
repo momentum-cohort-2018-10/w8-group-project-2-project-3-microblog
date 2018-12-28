@@ -27,18 +27,19 @@ const vm = new Vue({
     showFollowingNotAll: false,
   },
   mounted: function () {
-    this.getPosts();
     if (requestUserPk !== -1) {
       this.getLoggedInUser();
     } else {
-      showFeedNotAll = false;
+      this.showFeedNotAll = false;
     }
-    console.log(this)
+    this.getPosts();
+  },
+  updated: function () {
+    console.log(displayedItems)
   },
   methods: {
     count: function () {
       displayedItems++
-      console.log(displayedItems)
       return true;
     },
     resetCount: function () {
@@ -81,6 +82,7 @@ const vm = new Vue({
     getLoggedInUser: function () {
       this.$http.get(`/api/users/${requestUserPk}/`).then((response) => {
         this.loggedInUser = response.data
+        this.showFeedNotAll = true
       })
         .catch((err) => {
           console.log(err)
@@ -125,20 +127,20 @@ const vm = new Vue({
     isFollowed: function (user) {
       return this.loggedInUser.users_followed.includes(user.username)
     },
-    isFollowing: function(user) {
+    isFollowing: function (user) {
       return this.loggedInUser.followers.includes(user.username)
     },
-    isUserPost: function(post) {
-        return this.loggedInUser.posts.includes(post)
+    isUserPost: function (post) {
+      return this.loggedInUser.posts.includes(post)
     },
-     getFollowedUsers: function() {
-       if (this.isFollowed(user)) { 
-      this.$http.get(`/api/follows/?followed_user=${user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {
-         this.users = response.data;
-       })
-       }
-     },
-    toggleFollow: function(user) {
+    getFollowedUsers: function () {
+      if (this.isFollowed(user)) {
+        this.$http.get(`/api/follows/?followed_user=${user.pk}&amp;following_user=${this.loggedInUser.pk}`).then((response) => {
+          this.users = response.data;
+        })
+      }
+    },
+    toggleFollow: function (user) {
       // check if the request user is already following the user
       if (this.isFollowed(user)) {
         // if yes, get the follow object from the api and store it in this.followObject
@@ -181,22 +183,12 @@ const vm = new Vue({
   }
 });
 
+var filter = function (text, length, clamp) {
+  clamp = clamp || '...';
+  var node = document.createElement('div');
+  node.innerHTML = text;
+  var content = node.textContent;
+  return content.length > length ? content.slice(0, length) + clamp : content;
+};
 
-// const show = Vue.component('toggle-responses', {
-//   template: `
-//     <div>
-//       <a @click="toggle()" class="f6 grow no-underline br-pill ba ph3 pv1 dib mid-gray" href="#0">View Comments</a>
-//     </div>
-//   `,
-//   props: ['post'],
-//   methods: {
-//     toggle() {
-//       this.isActive = !this.isActive
-//     }
-//   },
-//   data() {
-//     return {
-//       isActive: false
-//     }
-//   }
-// })
+Vue.filter('truncate', filter);
